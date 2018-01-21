@@ -1,11 +1,23 @@
 <div class="callout" id="login">
-  <form>
+  <form (ngSubmit)="login();">
     <label class="text-left">Username
-      <input type="text" placeholder="user@domain.com">
+      <input
+        type="text"
+        placeholder="user@domain.com"
+        [(ngModel)]="usernameInput"
+        name="usernameField"
+        required
+        />
     </label>
   
     <label class="text-left">Password
-      <input type="password" placeholder="password">
+      <input
+        type="password"
+        placeholder="password"
+        [(ngModel)]="passwordInput"
+        name="passwordField"
+        required
+        >
     </label>
 
     <button class="button expanded">Login</button>
