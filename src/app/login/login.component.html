@@ -1,0 +1,16 @@
+<div class="callout" id="login">
+  <form>
+    <label class="text-left">Username
+      <input type="text" placeholder="user@domain.com">
+    </label>
+  
+    <label class="text-left">Password
+      <input type="password" placeholder="password">
+    </label>
+
+    <button class="button expanded">Login</button>
+    <span [hidden]="!this.showRegister">
+      <button class="button expanded">Register</button>
+    </span>
+  </form>
+</div>
