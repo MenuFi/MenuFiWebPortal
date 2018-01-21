@@ -1,5 +1,5 @@
 <div class="callout" id="login">
-  <form (ngSubmit)="login();">
+  <form (ngSubmit)="true">
     <label class="text-left">Username
       <input
         type="text"
@@ -20,9 +20,9 @@
         >
     </label>
 
-    <button class="button expanded">Login</button>
+    <button class="button expanded" type="submit" (click)="login();">Login</button>
     <span [hidden]="!this.showRegister">
-      <button class="button expanded">Register</button>
+      <button class="button expanded" (click)="register();">Register</button>
     </span>
   </form>
 </div>

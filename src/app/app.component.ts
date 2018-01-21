@@ -12,6 +12,8 @@ export class AppComponent implements OnInit {
   public title: string;
   public isProduction: boolean;
   public serverBaseUrl: string;
+
+  canRegister = false;
   
   constructor() {
     this.title = 'MenuFi';
