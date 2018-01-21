@@ -4,7 +4,13 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev deployment. This will use locally mocked services instead of a backend.
+
+Run `ng serve --env=local` for a local deployment. This will use the local backend at http://localhost:8080
+
+Run `ng serve --prod` for a prod deployment. This will use the remote backend at <TBD>
+
+The three different environments are outlined in the environments folder.
 
 ## Code scaffolding
 
