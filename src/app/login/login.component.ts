@@ -25,16 +25,18 @@ export class LoginComponent implements OnInit {
   private login() {
     console.log("Attempting login for " + this.usernameInput + " with password of length " + this.passwordInput.length);
     var obs: Observable<string> = this.loginService.loginUser(this.usernameInput, this.passwordInput);
-    obs.subscribe(res => console.log(res));
+    obs.subscribe(res => alert(res));
   }
 
   private register() {
     console.log("Attempting register for " + this.usernameInput + " with password of length " + this.passwordInput.length);
     var obs: Observable<boolean> = this.loginService.registerUser(this.usernameInput, this.passwordInput);
     obs.subscribe(res => {
-      console.log(res)
       if (res) {
+        alert("Registration succeeded!");
         this.login();
+      } else {
+        alert("Registration failed!");
       }
     });
   }
