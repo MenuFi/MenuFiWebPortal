@@ -8,6 +8,8 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class LoginServerService implements LoginService {
 
+    private currentToken: string = null;
+
     constructor(private http: HttpClient) { }
 
     public loginUser(username: string, password: string): Observable<string> {
@@ -16,5 +18,9 @@ export class LoginServerService implements LoginService {
     
     public registerUser(username: string, password: string): Observable<boolean> {
         throw new Error("Method not implemented.");
+    }
+
+    public getCurrentToken(): string {
+        return this.currentToken;
     }
 }

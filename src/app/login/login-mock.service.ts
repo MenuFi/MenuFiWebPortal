@@ -8,6 +8,7 @@ import { error } from 'util';
 export class LoginMockService implements LoginService {
 
     private userBank = {};
+    private currentToken: string = null;
 
     constructor() {
         this.userBank = {
@@ -18,15 +19,20 @@ export class LoginMockService implements LoginService {
 
     public loginUser(username: string, password: string): Observable<string> {
         if (username in this.userBank && password === this.userBank[username]) {
-            return Observable.of("somehash");
+            this.currentToken = "somehash";
         }
-        return Observable.of(null);
+        return Observable.of(this.currentToken);
     }
+
     public registerUser(username: string, password: string): Observable<boolean> {
         if (username in this.userBank) {
             return Observable.of(false);
         }
         this.userBank[username] = password;
         return Observable.of(true);
+    }
+
+    public getCurrentToken(): string {
+        return this.currentToken;
     }
 }

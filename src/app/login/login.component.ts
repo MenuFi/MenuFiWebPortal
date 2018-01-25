@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class LoginComponent implements OnInit {
 
-  @Input() showRegister: boolean = false;
+  @Input() showRegister: boolean = true;
 
   usernameInput: string = '';
   passwordInput: string = '';
