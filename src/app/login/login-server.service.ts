@@ -8,8 +8,6 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class LoginServerService implements LoginService {
 
-    private currentToken: string = null;
-
     constructor(private http: HttpClient) { }
 
     public loginUser(username: string, password: string): Observable<string> {
@@ -20,7 +18,23 @@ export class LoginServerService implements LoginService {
         throw new Error("Method not implemented.");
     }
 
+    public logoutUser() {
+        throw new Error("Method not implemented.");
+    }
+
     public getCurrentToken(): string {
-        return this.currentToken;
+        throw new Error("Method not implemented.");
+    }
+
+    public getRedirectUrl(): string {
+        throw new Error("Method not implemented.");
+    }
+
+    public setRedirectUrl(redirectUrl: string) {
+        throw new Error("Method not implemented.");
+    }
+
+    public isLoggedIn(): boolean {
+        throw new Error("Method not implemented.");
     }
 }

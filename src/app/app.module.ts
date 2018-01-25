@@ -12,6 +12,7 @@ import { environment } from '../environments/environment';
 import { LoginServerService } from './login/login-server.service';
 import { LoginMockService } from './login/login-mock.service';
 import { LoginService } from './login/login.service';
+import { AuthGuard } from './auth-guard.service';
 
 let loginServiceImpl = environment.production ? LoginServerService : LoginMockService;
 
@@ -28,7 +29,7 @@ let loginServiceImpl = environment.production ? LoginServerService : LoginMockSe
     MenuModule,
     AppRoutingModule
   ],
-  providers: [{ provide: LoginService, useClass: loginServiceImpl }],
+  providers: [{ provide: LoginService, useClass: loginServiceImpl }, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
