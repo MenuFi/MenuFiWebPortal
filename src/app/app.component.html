@@ -46,14 +46,13 @@
           <div class="primary callout">
             <p><strong>This is a twelve cell section in a grid-x.</strong> Each of these includes a div.callout element so you can see where the cell are - it's not required at all for the grid.</p>
             
+            <ul class="menu">
+              <li class="menu-text">MenuFi</li>
+              <li><a routerLink="/login" routerLinkActive="active text-center">Login</a></li>
+              <li><a routerLink="/menu" routerLinkActive="active text-center">Menu</a></li>
+            </ul>
+            <br>
             <div style="text-align:center">
-              <h1>
-                Welcome to {{title}}!             
-              </h1>
-              <nav>
-                <a routerLink="/login" routerLinkActive="active text-center">Login</a>
-                <a routerLink="/menu" routerLinkActive="active text-center">Menu</a>
-              </nav>  
               <router-outlet></router-outlet>
             </div>
           </div>
