@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
+import { MenuModule } from './menu/menu.module';
+import { AppRoutingModule } from './app-routing.module';
 
 
 import { AppComponent } from './app.component';
@@ -22,7 +24,9 @@ let loginServiceImpl = environment.production ? LoginServerService : LoginMockSe
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MenuModule,
+    AppRoutingModule
   ],
   providers: [{ provide: LoginService, useClass: loginServiceImpl }],
   bootstrap: [AppComponent]

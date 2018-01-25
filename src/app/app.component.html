@@ -47,11 +47,14 @@
             <p><strong>This is a twelve cell section in a grid-x.</strong> Each of these includes a div.callout element so you can see where the cell are - it's not required at all for the grid.</p>
             
             <div style="text-align:center">
-              <button (click)="canRegister = !canRegister;" class="button secondary">Toggle Register Display</button>
               <h1>
                 Welcome to {{title}}!             
               </h1>
-              <app-login [showRegister]="canRegister" class="text-center"></app-login>   
+              <nav>
+                <a routerLink="/login" routerLinkActive="active text-center">Login</a>
+                <a routerLink="/menu" routerLinkActive="active text-center">Menu</a>
+              </nav>  
+              <router-outlet></router-outlet>
             </div>
           </div>
         </div>
