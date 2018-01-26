@@ -1,4 +1,7 @@
 <div class="callout" id="login">
+  <h1>
+    MenuFi
+  </h1>
   <form (ngSubmit)="true">
     <label class="text-left">Username
       <input
@@ -9,7 +12,7 @@
         required
         />
     </label>
-  
+
     <label class="text-left">Password
       <input
         type="password"
@@ -22,7 +25,7 @@
 
     <button class="button expanded" type="submit" (click)="login();">Login</button>
     <span [hidden]="!this.showRegister">
-      <button class="button expanded" (click)="register();">Register</button>
+    <button class="button expanded" (click)="register();">Register</button>
     </span>
   </form>
 </div>
