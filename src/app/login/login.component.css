@@ -4,13 +4,13 @@
     margin-top: 200px;
 }
 div.callout {
-  border: 10px solid white;
-  border-radius: 10px;
+  background-color: transparent;
+  border-color: transparent;
 }
 
 h1 {
   font-size: 64px;
-  color: navy;
+  color: white;
   font-family: "Trebuchet MS";
 }
 
