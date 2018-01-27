@@ -20,9 +20,9 @@ export class LoginMockService implements LoginService {
         };
     }
 
-    public loginUser(username: string, password: string): Observable<string> {
+    public loginUser(email: string, password: string): Observable<string> {
         this.currentToken = null;
-        if (username in this.userBank && password === this.userBank[username]) {
+        if (email in this.userBank && password === this.userBank[email]) {
             this.currentToken = "somehash";
             this.loggedIn = true;
             this.router.navigate([this.redirectUrl]);
@@ -30,11 +30,11 @@ export class LoginMockService implements LoginService {
         return Observable.of(this.currentToken);
     }
 
-    public registerUser(username: string, password: string): Observable<boolean> {
-        if (username in this.userBank) {
+    public registerUser(email: string, password: string): Observable<boolean> {
+        if (email in this.userBank) {
             return Observable.of(false);
         }
-        this.userBank[username] = password;
+        this.userBank[email] = password;
         return Observable.of(true);
     }
 
