@@ -38,6 +38,10 @@ export class LoginServerService implements LoginService {
                 },
                 (httpError: HttpErrorResponse) => {
                     let errorResponse: CustomResponse<string> = CustomResponse.fromResponse<string>(httpError.error);
+                    if (errorResponse.message === null) {
+                        errorResponse.status = "error";
+                        errorResponse.message = httpError.status + ": " + httpError.statusText;
+                    }
                     onError(errorResponse);
                     console.log(httpError);
                 });
