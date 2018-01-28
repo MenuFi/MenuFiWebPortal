@@ -4,6 +4,7 @@ import 'rxjs/add/observable/of';
 import { LoginService } from './login.service';
 import { error } from 'util';
 import { Router } from '@angular/router';
+import { CustomResponse } from '../shared/CustomResponse';
 
 @Injectable()
 export class LoginMockService implements LoginService {
@@ -20,22 +21,25 @@ export class LoginMockService implements LoginService {
         };
     }
 
-    public loginUser(email: string, password: string): Observable<string> {
+    public loginUser(email: string, password: string, onSuccess: (response: CustomResponse<string>) => void, onError: (response: CustomResponse<string>) => void) {
         this.currentToken = null;
         if (email in this.userBank && password === this.userBank[email]) {
             this.currentToken = "somehash";
             this.loggedIn = true;
             this.router.navigate([this.redirectUrl]);
+            onSuccess(new CustomResponse<string>("success", this.currentToken, null));
+        } else {
+            onError(new CustomResponse<string>("error", null, "Wrong username or password."));
         }
-        return Observable.of(this.currentToken);
     }
 
-    public registerUser(email: string, password: string): Observable<boolean> {
+    public registerUser(email: string, password: string, onSuccess: (response: CustomResponse<boolean>) => void, onError: (response: CustomResponse<boolean>) => void) {
         if (email in this.userBank) {
-            return Observable.of(false);
+            onError(new CustomResponse<boolean>("error", false, "Account already exists!"));
+        } else {
+            this.userBank[email] = password;
+            onSuccess(new CustomResponse<boolean>("success", true, null));
         }
-        this.userBank[email] = password;
-        return Observable.of(true);
     }
 
     public logoutUser() {

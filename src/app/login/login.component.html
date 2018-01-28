@@ -25,7 +25,11 @@
 
     <button class="button expanded" type="submit" (click)="login();">Login</button>
     <span [hidden]="!this.showRegister">
-    <button class="button expanded" (click)="register();">Register</button>
+      <button class="button expanded" (click)="register();">Register</button>
+    </span>
+    <span [hidden]="!this.showErrorMessage" style="color: white">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+      {{this.errorMessage}}
     </span>
   </form>
 </div>

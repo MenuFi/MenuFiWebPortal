@@ -16,29 +16,46 @@ export class LoginComponent implements OnInit {
   usernameInput: string = '';
   passwordInput: string = '';
 
+  private errorMessage: string;
+  private showErrorMessage: boolean;
+
   constructor(private loginService: LoginService) { }
 
   ngOnInit() {
     console.log(this.showRegister);
+    this.errorMessage = "";
+    this.showErrorMessage = false;
   }
 
   private login() {
     console.log("Attempting login for " + this.usernameInput + " with password of length " + this.passwordInput.length);
-    var obs: Observable<string> = this.loginService.loginUser(this.usernameInput, this.passwordInput);
-    obs.subscribe(res => alert(res));
+    this.loginService.loginUser(
+      this.usernameInput,
+      this.passwordInput,
+      res => {
+        console.log(res.data);
+        this.showErrorMessage = false;
+      },
+      error => {
+        this.showErrorMessage = true;
+        this.errorMessage = error.message;
+      });
   }
 
   private register() {
     console.log("Attempting register for " + this.usernameInput + " with password of length " + this.passwordInput.length);
-    var obs: Observable<boolean> = this.loginService.registerUser(this.usernameInput, this.passwordInput);
-    obs.subscribe(res => {
-      if (res) {
-        alert("Registration succeeded!");
-        this.login();
-      } else {
-        alert("Registration failed!");
-      }
-    });
+    this.loginService.registerUser(
+      this.usernameInput,
+      this.passwordInput,
+      res => {
+        console.log(res.data);
+        this.showErrorMessage = false;
+      },
+      error => {
+        this.showErrorMessage = true;
+        this.errorMessage = error.message;
+      });
+
   }
 
 }
