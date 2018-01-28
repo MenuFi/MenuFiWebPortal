@@ -6,6 +6,7 @@ import { LoginService } from './login.service';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { CustomResponse } from '../shared/CustomResponse';
+import { HttpErrorResponse } from '@angular/common/http/src/response';
 
 @Injectable()
 export class LoginServerService implements LoginService {
@@ -35,10 +36,10 @@ export class LoginServerService implements LoginService {
                     onSuccess(response);
                     this.router.navigate([this.redirectUrl]);
                 },
-                error => {
-                    let errorResponse: CustomResponse<string> = CustomResponse.fromResponse<string>(error);
+                (httpError: HttpErrorResponse) => {
+                    let errorResponse: CustomResponse<string> = CustomResponse.fromResponse<string>(httpError.error);
                     onError(errorResponse);
-                    console.log(error);
+                    console.log(httpError);
                 });
     }
     
@@ -59,9 +60,9 @@ export class LoginServerService implements LoginService {
                     let response: CustomResponse<boolean> = CustomResponse.fromResponse<boolean>(res);
                     onSuccess(response);
                 },
-                error => {
-                    console.log(error);
-                    let errorResponse: CustomResponse<boolean> = CustomResponse.fromResponse<boolean>(error);
+                (httpError: HttpErrorResponse) => {
+                    console.log(httpError);
+                    let errorResponse: CustomResponse<boolean> = CustomResponse.fromResponse<boolean>(httpError.error);
                     onError(errorResponse);
                 });
     }
