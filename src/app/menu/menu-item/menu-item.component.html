@@ -1,6 +1,12 @@
-<h3>{{this.menuItemModel.name}}</h3>
-<ul>
-  <li>{{this.menuItemModel.description}}</li>
-  <li>{{this.menuItemModel.price | currency:'USD'}}</li>
-  <li>{{this.menuItemModel.calories}} Calories</li>
-</ul>
+<div class="card">
+  <div class="card-divider">
+    <h4>{{this.menuItemModel.name}}</h4>
+  </div>
+  <div class="card-section">
+    <ul>
+      <li>{{this.menuItemModel.description}}</li>
+      <li>{{this.menuItemModel.price | currency:'USD'}}</li>
+      <li>{{this.menuItemModel.calories}} Calories</li>
+    </ul>
+  </div>
+</div>
