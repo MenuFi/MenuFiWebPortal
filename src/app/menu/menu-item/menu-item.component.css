@@ -1,0 +1,28 @@
+div.inline {
+    display: inline-block;
+    vertical-align: top;
+}
+
+div.card-section > img {
+    float: left;
+}
+
+div.card-section li {
+    list-style-type: none;
+}
+
+div.ingredients {
+    margin-top:20px;
+}
+
+div.card-divider h1, h2, h3, h4 {
+    display: inline;
+}
+
+div.card-divider span.clearfix {
+    width: 100%;
+}
+
+div.card-divider button {
+    margin-bottom: 0;
+}

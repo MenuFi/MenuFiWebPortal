@@ -1,12 +1,26 @@
 <div class="card">
   <div class="card-divider">
-    <h4>{{this.menuItemModel.name}}</h4>
+    <span class="clearfix">
+      <h4>{{this.menuItemModel.name}}</h4>
+      <button class="button secondary float-right" disabled>Edit</button>
+    </span>
   </div>
   <div class="card-section">
-    <ul>
-      <li>{{this.menuItemModel.description}}</li>
-      <li>{{this.menuItemModel.price | currency:'USD'}}</li>
-      <li>{{this.menuItemModel.calories}} Calories</li>
-    </ul>
+    <div>
+      <img src="assets/placeholder_square.png" alt="{{this.menuItemModel.name}}" width=150px/>
+      <div class="inline">
+        <ul>
+          <li>{{this.menuItemModel.price | currency:'USD'}}</li>
+          <li>{{this.menuItemModel.calories}} Calories</li>
+          <li>{{this.menuItemModel.description}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ingredients">
+      <b>Ingredients:</b>
+      <span *ngFor="let ingredient of this.menuItemModel.ingredients; let i = index">
+        {{ingredient}}<span [hidden]="i == this.menuItemModel.ingredients.length - 1">,&nbsp;</span>
+      </span>
+    </div>
   </div>
 </div>
