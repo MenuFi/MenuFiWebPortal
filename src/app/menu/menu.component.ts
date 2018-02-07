@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { MenuService } from './menu.service';
 import { MenuItem } from './menu-item/menu-item.model';
 
 @Component({
@@ -11,13 +12,12 @@ import { MenuItem } from './menu-item/menu-item.model';
 export class MenuComponent implements OnInit {
 
   menuItemsData: Observable<Array<MenuItem>>;
+  restaurantId: number = 0;
 
-  constructor() { }
+  constructor(private menuService: MenuService) { }
 
   ngOnInit() {
-    this.menuItemsData = Observable.of([
-      new MenuItem(0, "Menu Item A", 5.99, [], 100, "Description A", 3.5)
-    ]);
+    this.menuItemsData = this.menuService.getMenuItems(this.restaurantId);
   }
 
 }
