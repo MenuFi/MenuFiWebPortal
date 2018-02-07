@@ -1,6 +1,11 @@
 <br>
 <br>
-<div class="window">
+<div class="window text-center">
     <h2>Menu Editing Page</h2>
     <p>This page is under construction.</p>
+
+    <app-menu-item
+        class="text-left"
+        [menuItemModel]=menuItem *ngFor="let menuItem of menuItemsData | async">
+    </app-menu-item>
 </div>

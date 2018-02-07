@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { MenuItem } from './menu-item/menu-item.model';
 
 @Component({
   selector: 'app-menu',
@@ -8,9 +10,14 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
+  menuItemsData: Observable<Array<MenuItem>>;
+
   constructor() { }
 
   ngOnInit() {
+    this.menuItemsData = Observable.of([
+      new MenuItem(0, "Menu Item A", 5.99, [], 100, "Description A", 3.5)
+    ]);
   }
 
 }
