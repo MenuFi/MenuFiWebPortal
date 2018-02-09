@@ -16,10 +16,22 @@
         </ul>
       </div>
     </div>
-    <div class="ingredients">
+    <div class="csv">
       <b>Ingredients:</b>
-      <span *ngFor="let ingredient of this.menuItemModel.ingredients; let i = index">
-        {{ingredient}}<span [hidden]="i == this.menuItemModel.ingredients.length - 1">,&nbsp;</span>
+      <span *ngFor="let ingredient of this.menuItemModel.ingredients; let ingredientIndex = index">
+        {{ingredient}}<span [hidden]="ingredientIndex == this.menuItemModel.ingredients.length - 1">,&nbsp;</span>
+      </span>
+    </div>
+    <div class="csv">
+      <b>Preferences:</b>
+      <span *ngFor="let preference of this.dietaryPreferences; let preferenceIndex = index">
+        {{preference.name}}<span [hidden]="preferenceIndex == this.dietaryPreferences.length - 1">,&nbsp;</span>
+      </span>
+    </div>
+    <div class="csv">
+      <b>Restrictions:</b>
+      <span *ngFor="let restriction of this.dietaryRestrictions; let restrictionIndex = index">
+        {{restriction.name}}<span [hidden]="restrictionIndex == this.dietaryRestrictions.length - 1">,&nbsp;</span>
       </span>
     </div>
   </div>

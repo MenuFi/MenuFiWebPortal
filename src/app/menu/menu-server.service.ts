@@ -9,7 +9,7 @@ export class MenuServerService implements MenuService {
     public getMenuItems(restaurantId: number): Observable<Array<MenuItem>> {
         // TODO: Actually implement http call once backend is up and serving
         return Observable.of([
-            new MenuItem(0, "TODO: Implement HTTP Calls", 10.99, [], 10000, "Waiting on the backend API to be released", 0.0),
+            new MenuItem(0, "TODO: Implement HTTP Calls", 10.99, [], [], 10000, "Waiting on the backend API to be released", 0.0),
         ]);
     }
 }
