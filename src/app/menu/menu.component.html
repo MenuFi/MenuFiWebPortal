@@ -3,9 +3,6 @@
 <div class="window text-center">
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
-            <div class="cell medium-12 large-6" *ngFor="let menuItem of menuItemsData | async">
-                <app-menu-item class="text-left" [menuItemModel]=menuItem></app-menu-item>
-            </div>
             <div class="cell">
                 <button
                     type="button"
@@ -14,6 +11,9 @@
                     (click)="addMenuItemForm.reset(); resetAddForm();">
                     Add menu item
                 </button>
+            </div>
+            <div class="cell medium-12 large-6" *ngFor="let menuItem of menuItemsData | async">
+                <app-menu-item class="text-left" [menuItemModel]=menuItem></app-menu-item>
             </div>
         </div>
     </div>
@@ -112,8 +112,6 @@
                                 />
                             <label for="newRestriction{{restrictionIndex}}">{{this.allRestrictions[restrictionIndex].name}}</label>
                         </div>
-                        
-                    
                         <label>Preferences</label>
                         <div *ngFor="let newPreferenceMask of newPreferencesMask; let preferenceIndex = index; trackBy:trackByIndex">
                             <input
@@ -125,9 +123,6 @@
                             <label for="newPreference{{preferenceIndex}}">{{this.allPreferences[preferenceIndex].name}}</label>
                         </div>
                     </div>
-
-                    
-
                 </div>
             </div>
             <div class="cell">

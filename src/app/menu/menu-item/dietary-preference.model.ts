@@ -13,3 +13,7 @@ export class DietaryPreference {
         return this.type == 1;
     }
 }
+
+DietaryPreference.prototype.valueOf = function() {
+    return this.dietaryPreferenceId;
+}

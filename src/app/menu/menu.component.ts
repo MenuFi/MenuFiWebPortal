@@ -46,11 +46,11 @@ export class MenuComponent implements OnInit {
 
   private splitPreferences() {
     this.allPreferences = this.preferenceOptions.filter((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
-      return value.type == 0;
+      return !value.isRestriction();
     });
 
     this.allRestrictions = this.preferenceOptions.filter((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
-      return value.type == 1;
+      return value.isRestriction();
     });
 
     this.newPreferencesMask = Array<boolean>(this.allPreferences.length).fill(false);
