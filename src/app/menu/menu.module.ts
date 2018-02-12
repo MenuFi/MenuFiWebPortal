@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MenuRoutingModule } from './menu-routing.module';
 
@@ -14,6 +15,7 @@ let menuServiceImpl = environment.production ? MenuServerService : MenuMockServi
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     MenuRoutingModule
   ],
   declarations: [MenuComponent, MenuItemComponent],
