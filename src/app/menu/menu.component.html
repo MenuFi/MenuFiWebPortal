@@ -6,6 +6,22 @@
             <div class="cell medium-12 large-6" *ngFor="let menuItem of menuItemsData | async">
                 <app-menu-item class="text-left" [menuItemModel]=menuItem></app-menu-item>
             </div>
+            <div class="cell">
+                <button type="button" class="button primary large expanded" data-open="addModal">Add menu item</button>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<div class="reveal" id="addModal" data-reveal>
+    <div class="grid-x grid-margin-x">
+        <div class="cell">
+            This form is under construction.
+        </div>
+        <div class="cell">
+            <button class="primary button" type="button" data-close>Add</button>
+            <button class="primary button" type="button" data-close>Cancel</button>
         </div>
     </div>
 </div>

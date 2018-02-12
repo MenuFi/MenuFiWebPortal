@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { MenuService } from './menu.service';
 import { MenuItem } from './menu-item/menu-item.model';
+declare var $:any
 
 @Component({
   selector: 'app-menu',
@@ -18,6 +19,7 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {
     this.menuItemsData = this.menuService.getMenuItems(this.restaurantId);
+    $(document).foundation();
   }
 
 }

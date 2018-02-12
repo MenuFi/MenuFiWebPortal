@@ -23,9 +23,9 @@
         >
     </label>
 
-    <button class="button expanded" type="submit" (click)="login();">Login</button>
+    <button class="button primary expanded" type="submit" (click)="login();">Login</button>
     <span [hidden]="!this.showRegister">
-      <button class="button expanded" (click)="register();">Register</button>
+      <button class="button primary expanded" (click)="register();">Register</button>
     </span>
     <span [hidden]="!this.showMessage">
       <i [hidden]="!this.isError" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
