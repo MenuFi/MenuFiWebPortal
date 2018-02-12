@@ -11,7 +11,7 @@
                     type="button"
                     class="button primary large expanded"
                     data-open="addModal"
-                    (click)="addMenuItemForm.reset()">
+                    (click)="addMenuItemForm.reset(); resetAddForm();">
                     Add menu item
                 </button>
             </div>
@@ -21,6 +21,7 @@
 </div>
 
 <div class="reveal" id="addModal" data-reveal>
+    <h2>Add new menu item</h2>
     <form (ngSubmit)="submitCreateMenuItem();" #addMenuItemForm="ngForm">
         <div class="grid-x grid-margin-x">
             <div class="cell">
@@ -34,8 +35,37 @@
                     />
             </div>
             <div class="cell">
-                <img src="{{newImageUrl}}" alt="image of menu item" width=150px
-                    onerror="if (this.src != 'assets/placeholder_square.png') this.src = 'assets/placeholder_square.png'"/>
+                <div class="grid-x grid-margin-x">
+                    <div class="cell medium-4 large-4">
+                        <label>Image Preview</label>
+                        <img src="{{newImageUrl}}" alt="image of menu item"
+                            onerror="if (this.src != 'assets/placeholder_square.png') this.src = 'assets/placeholder_square.png'"/>
+                    </div>
+                    <div class="cell auto">
+                        <label>Calories</label>
+                        <input
+                            type="number"
+                            placeholder="200"
+                            [(ngModel)]="newCalories"
+                            name="newCalories"
+                            required
+                            />
+                        <label>Price</label>
+                        <div class="input-group">
+                            <span class="input-group-label"><i class="fa fa-usd"></i></span>
+                            <input
+                                type="number"
+                                placeholder="5.99"
+                                class="input-group-field"
+                                [(ngModel)]="newPrice"
+                                name="newPrice"
+                                required
+                                />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cell">
                 <label>Image Url</label>
                 <input
                     type="text"
@@ -57,25 +87,11 @@
                             required
                             />
                     </div>
-                    <div class="cell auto">
-                        <label>Price</label>
-                        <div class="input-group">
-                            <span class="input-group-label"><i class="fa fa-usd"></i></span>
-                            <input
-                                type="number"
-                                placeholder="5.99"
-                                class="input-group-field"
-                                [(ngModel)]="newPrice"
-                                name="newPrice"
-                                required
-                                />
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="cell">
                 <div class="grid-x grid-margin-x">
-                    <div class="cell auto">
+                    <div class="cell medium-8 large-8">
                         <label>Ingredients</label>
                         <input
                             *ngFor="let newIngredient of newIngredients; let ingredientIndex = index; trackBy:trackByIndex"

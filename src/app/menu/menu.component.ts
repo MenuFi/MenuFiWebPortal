@@ -18,6 +18,7 @@ export class MenuComponent implements OnInit {
 
   newName: string = '';
   newDescription: string = '';
+  newCalories: number;
   newPrice: number;
   newImageUrl: string = '';
   newIngredients: Array<string> = [];
@@ -38,13 +39,23 @@ export class MenuComponent implements OnInit {
       new DietaryPreference(3, "Gluten", 1)
     ]
 
-    this.newPreferencesMask = Array<boolean>(this.allPreferences.length).fill(false);
-    this.newRestrictionsMask = Array<boolean>(this.allRestrictions.length).fill(false);
+    this.resetAddForm();
   }
 
   ngOnInit() {
     this.menuItemsData = this.menuService.getMenuItems(this.restaurantId);
     $(document).foundation();
+  }
+
+  private resetAddForm() {
+    this.newName = '';
+    this.newDescription = '';
+    this.newCalories = 0;
+    this.newPrice = 0;
+    this.newImageUrl = '';
+    this.newIngredients = [];
+    this.newPreferencesMask = Array<boolean>(this.allPreferences.length).fill(false);
+    this.newRestrictionsMask = Array<boolean>(this.allRestrictions.length).fill(false);
   }
 
   private submitCreateMenuItem() {
