@@ -68,15 +68,13 @@ export class MenuComponent implements OnInit {
     this.newRestrictionsMask = Array<boolean>(this.allRestrictions.length).fill(false);
   }
 
-  private submitCreateMenuItem() {
-    console.log(this.newName);
-    console.log(this.newDescription);
-    console.log(this.newPrice);
-    console.log(this.newImageUrl);
-    console.log(this.newIngredients);
-    console.log(this.newRestrictionsMask);
-    console.log(this.newPreferencesMask);
+  private removeIngredient(ingredientIndex: number) {
+    this.newIngredients = this.newIngredients.filter((value: string, index: number, array: Array<string>) => {
+      return index != ingredientIndex;
+    });
+  }
 
+  private submitCreateMenuItem() {
     let newPreferences: Array<DietaryPreference> = this.allPreferences.filter((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
       return this.newPreferencesMask[index];
     });
@@ -88,6 +86,7 @@ export class MenuComponent implements OnInit {
     let newMenuItemPreferences = [].concat(newPreferences).concat(newRestrictions);
     let newMenuItem: MenuItem = new MenuItem(-1, this.newName, this.newPrice, this.newIngredients, newMenuItemPreferences, this.newCalories, this.newDescription, 0, this.newImageUrl);
     this.menuService.createMenuItem(this.restaurantId, newMenuItem);
+    return false;
   }
 
   trackByIndex(index: number, value: any) {

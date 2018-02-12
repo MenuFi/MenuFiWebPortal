@@ -76,8 +76,34 @@ export class MenuItemComponent implements OnInit, OnChanges {
     });
   }
 
+  private removeIngredient(ingredientIndex: number) {
+    this.newIngredients = this.newIngredients.filter((value: string, index: number, array: Array<string>) => {
+      return index != ingredientIndex;
+    });
+  }
+
   private submitEditMenuItem() {
-    console.log("Submit!");
+    let newPreferences: Array<DietaryPreference> = this.allPreferences.filter((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
+      return this.newPreferencesMask[index];
+    });
+
+    let newRestrictions: Array<DietaryPreference> = this.allRestrictions.filter((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
+      return this.newRestrictionsMask[index];
+    });
+
+    let newMenuItemPreferences = [].concat(newPreferences).concat(newRestrictions);
+    let menuItem: MenuItem = new MenuItem(
+      this.menuItemModel.menuItemId,
+      this.newName,
+      this.newPrice,
+      this.newIngredients,
+      newMenuItemPreferences,
+      this.newCalories,
+      this.newDescription,
+      this.menuItemModel.rating,
+      this.newImageUrl
+    );
+    this.menuService.editMenuItem(0, menuItem);
   }
 
   trackByIndex(index: number, value: any) {

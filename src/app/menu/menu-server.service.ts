@@ -19,4 +19,7 @@ export class MenuServerService implements MenuService {
     public createMenuItem(restaurantId: number, menuItem: MenuItem) {
         throw new Error("Method not implemented.");
     }
+    public editMenuItem(restaurantId: number, menuItem: MenuItem) {
+        throw new Error("Method not implemented.");
+    }
 }

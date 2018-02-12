@@ -46,3 +46,13 @@ ul.menu a:active {
 .button.primary:disabled, .button.primary:disabled:hover {
   background-color: #808080
 }
+
+button.input-el {
+    margin: 0;
+    padding: 0 10px;
+    height: auto;
+}
+
+input.input-el {
+    margin: 0 0;
+}

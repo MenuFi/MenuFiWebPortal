@@ -30,4 +30,13 @@ export class MenuMockService implements MenuService {
     public createMenuItem(restaurantId: number, menuItem: MenuItem) {
         this.menuItems.push(menuItem);
     }
+    public editMenuItem(restaurantId: number, menuItem: MenuItem) {
+        let i = 0;
+        let menuItemIndex = this.menuItems.findIndex((value: MenuItem, index: number, array: Array<MenuItem>) => {
+            return value.menuItemId == menuItem.menuItemId;
+        });
+        if (menuItemIndex != -1) {
+            this.menuItems[menuItemIndex] = menuItem;
+        }
+    }
 }
