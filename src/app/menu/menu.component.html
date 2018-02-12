@@ -98,7 +98,6 @@
                             type="text"
                             name="newIngredient{{ingredientIndex}}"
                             [(ngModel)]="newIngredients[ingredientIndex]"
-                            required
                             />
                         <button type="button" class="primary button expanded" (click)="newIngredients.push('');">Add ingredient</button>
                     </div>
@@ -110,7 +109,6 @@
                                 id="newRestriction{{restrictionIndex}}"
                                 name="newRestriction{{restrictionIndex}}"
                                 [(ngModel)]="newRestrictionsMask[restrictionIndex]"
-                                required
                                 />
                             <label for="newRestriction{{restrictionIndex}}">{{this.allRestrictions[restrictionIndex].name}}</label>
                         </div>
@@ -123,7 +121,6 @@
                                 id="newPreference{{preferenceIndex}}"
                                 name="newPreference{{preferenceIndex}}"
                                 [(ngModel)]="newPreferencesMask[preferenceIndex]"
-                                required
                                 />
                             <label for="newPreference{{preferenceIndex}}">{{this.allPreferences[preferenceIndex].name}}</label>
                         </div>
@@ -134,7 +131,7 @@
                 </div>
             </div>
             <div class="cell">
-                <button class="primary button" type="submit" data-close>Add</button>
+                <button class="primary button" type="submit" data-close [disabled]="!addMenuItemForm.form.valid">Add</button>
                 <button class="primary button" type="reset" data-close>Cancel</button>
             </div>
         </div>

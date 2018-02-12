@@ -7,7 +7,8 @@
   </div>
   <div class="card-section">
     <div>
-      <img src="assets/placeholder_square.png" alt="{{this.menuItemModel.name}}" width=150px/>
+      <img src="{{this.menuItemModel.pictureUri}}" alt="{{this.menuItemModel.name}}" width=150px
+        onerror="if (this.src != 'assets/placeholder_square.png') this.src = 'assets/placeholder_square.png'"/>
       <div class="inline">
         <ul>
           <li>{{this.menuItemModel.price | currency:'USD'}}</li>
@@ -21,17 +22,26 @@
       <span *ngFor="let ingredient of this.menuItemModel.ingredients; let ingredientIndex = index">
         {{ingredient}}<span [hidden]="ingredientIndex == this.menuItemModel.ingredients.length - 1">,&nbsp;</span>
       </span>
+      <span [hidden]="this.menuItemModel.ingredients.length > 0">
+        None
+      </span>
     </div>
     <div class="csv">
       <b>Preferences:</b>
       <span *ngFor="let preference of this.dietaryPreferences; let preferenceIndex = index">
         {{preference.name}}<span [hidden]="preferenceIndex == this.dietaryPreferences.length - 1">,&nbsp;</span>
       </span>
+      <span [hidden]="this.dietaryPreferences.length > 0">
+        None
+      </span>
     </div>
     <div class="csv">
       <b>Restrictions:</b>
       <span *ngFor="let restriction of this.dietaryRestrictions; let restrictionIndex = index">
         {{restriction.name}}<span [hidden]="restrictionIndex == this.dietaryRestrictions.length - 1">,&nbsp;</span>
+      </span>
+      <span [hidden]="this.dietaryRestrictions.length > 0">
+        None
       </span>
     </div>
   </div>

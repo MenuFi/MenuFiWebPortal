@@ -25,26 +25,36 @@ export class MenuComponent implements OnInit {
   newPreferencesMask: Array<boolean> = [];
   newRestrictionsMask: Array<boolean> = [];
 
+  preferenceOptions: Array<DietaryPreference>;
   allPreferences: Array<DietaryPreference>;
   allRestrictions: Array<DietaryPreference>;
 
   constructor(private menuService: MenuService) {
-    this.allPreferences = [
-      new DietaryPreference(0, "Vegetarian", 0),
-      new DietaryPreference(1, "Pescetarian", 0)
-    ];
-
-    this.allRestrictions = [
-      new DietaryPreference(2, "Peanut", 1),
-      new DietaryPreference(3, "Gluten", 1)
-    ]
-
+    this.preferenceOptions = [];
+    this.splitPreferences();
     this.resetAddForm();
   }
 
   ngOnInit() {
-    this.menuItemsData = this.menuService.getMenuItems(this.restaurantId);
     $(document).foundation();
+    this.menuItemsData = this.menuService.getMenuItems(this.restaurantId);
+    this.menuService.getAllPreferences().subscribe((value: Array<DietaryPreference>) => {
+      this.preferenceOptions = value;
+      this.splitPreferences();
+    });
+  }
+
+  private splitPreferences() {
+    this.allPreferences = this.preferenceOptions.filter((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
+      return value.type == 0;
+    });
+
+    this.allRestrictions = this.preferenceOptions.filter((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
+      return value.type == 1;
+    });
+
+    this.newPreferencesMask = Array<boolean>(this.allPreferences.length).fill(false);
+    this.newRestrictionsMask = Array<boolean>(this.allRestrictions.length).fill(false);
   }
 
   private resetAddForm() {
@@ -66,6 +76,18 @@ export class MenuComponent implements OnInit {
     console.log(this.newIngredients);
     console.log(this.newRestrictionsMask);
     console.log(this.newPreferencesMask);
+
+    let newPreferences: Array<DietaryPreference> = this.allPreferences.filter((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
+      return this.newPreferencesMask[index];
+    });
+
+    let newRestrictions: Array<DietaryPreference> = this.allRestrictions.filter((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
+      return this.newRestrictionsMask[index];
+    });
+
+    let newMenuItemPreferences = [].concat(newPreferences).concat(newRestrictions);
+    let newMenuItem: MenuItem = new MenuItem(-1, this.newName, this.newPrice, this.newIngredients, newMenuItemPreferences, this.newCalories, this.newDescription, 0, this.newImageUrl);
+    this.menuService.createMenuItem(this.restaurantId, newMenuItem);
   }
 
   trackByIndex(index: number, value: any) {

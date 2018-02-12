@@ -9,8 +9,9 @@ export class MenuItem {
     public calories: number;
     public description: string;
     public rating: number;
+    public pictureUri: string;
 
-    public constructor(menuItemId: number, name: string, price: number, ingredients: Array<string>, dietaryPreferences: Array<DietaryPreference>, calories: number, description: string, rating: number) {
+    public constructor(menuItemId: number, name: string, price: number, ingredients: Array<string>, dietaryPreferences: Array<DietaryPreference>, calories: number, description: string, rating: number, pictureUri: string) {
         this.menuItemId = menuItemId;
         this.name = name;
         this.price = price;
@@ -19,5 +20,6 @@ export class MenuItem {
         this.calories = calories;
         this.description = description;
         this.rating = rating;
+        this.pictureUri = pictureUri;
     }
 }
