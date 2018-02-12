@@ -5,7 +5,7 @@ declare var $:any
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css', './shared/css/foundation.min.css'],
+  styleUrls: ['./shared/css/foundation.min.css', './app.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {

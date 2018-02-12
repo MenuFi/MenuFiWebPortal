@@ -1,9 +1,9 @@
-<div class="callout" id="login">
-  <h1>
+<div class="callout secondary" id="login">
+  <h2>
     MenuFi
-  </h1>
+  </h2>
   <form (ngSubmit)="true">
-    <label class="text-left" style="color: white">Username
+    <label class="text-left">Username
       <input
         type="text"
         placeholder="user@domain.com"
@@ -13,7 +13,7 @@
         />
     </label>
 
-    <label class="text-left" style="color: white">Password
+    <label class="text-left">Password
       <input
         type="password"
         placeholder="password"
@@ -27,12 +27,12 @@
     <span [hidden]="!this.showRegister">
       <button class="button expanded" (click)="register();">Register</button>
     </span>
-    <span [hidden]="!this.showMessage" style="color: white">
+    <span [hidden]="!this.showMessage">
       <i [hidden]="!this.isError" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
       <i [hidden]="this.isError" class="fa fa-check-circle" aria-hidden="true"></i>
       {{this.message}}
     </span>
-    <span [hidden]="!this.isLoading || this.showMessage" style="color: white">
+    <span [hidden]="!this.isLoading || this.showMessage">
       <i class="fa fa-spinner fa-pulse fa-fw"></i>
       Loading...
     </span>

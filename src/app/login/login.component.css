@@ -3,14 +3,9 @@
     display: inline-block;
     margin-top: 150px;
 }
-div.callout {
-  background-color: transparent;
-  border-color: transparent;
-}
 
-h1 {
-  font-size: 64px;
-  color: white;
+h2 {
+  color: black;
   font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 }
 

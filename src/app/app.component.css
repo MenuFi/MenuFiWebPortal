@@ -4,7 +4,7 @@ div.back {
   padding: 0px;
   margin: 0px;
   min-height: 1080px;
-  background: linear-gradient(#f5d376, #545454);
+  background: white;
 }
 
 div.primaryCallout {
@@ -12,11 +12,21 @@ div.primaryCallout {
   height: 100%;
   padding: 0px;
   margin: 0px;
+  background-color: #335170;
 }
 
-ul.menu {
-  margin: 0px;
-  padding: 0px;
-  border-bottom: 10px solid grey;
-  border-radius: 10px;
+.menu-text {
+  color: white !important;
+}
+
+.menu a:link, a:visited {
+  color: #e5e5e5;
+}
+
+.menu a:hover {
+  color: #1879db;
+}
+
+.menu a:active {
+  color: white;
 }
