@@ -17,8 +17,8 @@ export class MenuMockService implements MenuService {
     private menuItems: Array<MenuItem> = [
         new MenuItem(0, "Menu Item A", 5.99, this.ingredients, this.preferences, 100, "Description A", 3.5, ""),
         new MenuItem(1, "Menu Item B", 4.99, this.ingredients, this.preferences, 150, "Description B", 3.3, ""),
-        new MenuItem(0, "Menu Item C", 7.99, this.ingredients, this.preferences, 200, "Description C", 3.6, ""),
-        new MenuItem(1, "Menu Item D", 2.99, this.ingredients, this.preferences, 350, "Description D", 3.1, "")
+        new MenuItem(2, "Menu Item C", 7.99, this.ingredients, this.preferences, 200, "Description C", 3.6, ""),
+        new MenuItem(3, "Menu Item D", 2.99, this.ingredients, this.preferences, 350, "Description D", 3.1, "")
     ];
 
     public getMenuItems(restaurantId: number): Observable<Array<MenuItem>> {
