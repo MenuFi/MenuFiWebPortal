@@ -7,6 +7,7 @@ import { DietaryPreference } from './menu-item/dietary-preference.model';
 
 @Injectable()
 export class MenuMockService implements MenuService {
+    private runningId: number = 4;
     private ingredients: Array<string> = ["Ingredient 1", "Ingredient 2", "Ingredient 3", "Ingredient 4", "Ingredient 5", "Ingredient 6"];
     private preferences: Array<DietaryPreference> = [
         new DietaryPreference(0, "Peanut", 1),
@@ -15,28 +16,33 @@ export class MenuMockService implements MenuService {
         new DietaryPreference(3, "Gluten", 1)
     ];
     private menuItems: Array<MenuItem> = [
-        new MenuItem(0, "Menu Item A", 5.99, this.ingredients, this.preferences, 100, "Description A", 3.5, ""),
-        new MenuItem(1, "Menu Item B", 4.99, this.ingredients, this.preferences, 150, "Description B", 3.3, ""),
-        new MenuItem(2, "Menu Item C", 7.99, this.ingredients, this.preferences, 200, "Description C", 3.6, ""),
-        new MenuItem(3, "Menu Item D", 2.99, this.ingredients, this.preferences, 350, "Description D", 3.1, "")
+        new MenuItem(0, "Menu Item A", 5.99, this.ingredients.slice(0), this.preferences.slice(0), 100, "Description A", 3.5, ""),
+        new MenuItem(1, "Menu Item B", 4.99, this.ingredients.slice(0), this.preferences.slice(0), 150, "Description B", 3.3, ""),
+        new MenuItem(2, "Menu Item C", 7.99, this.ingredients.slice(0), this.preferences.slice(0), 200, "Description C", 3.6, ""),
+        new MenuItem(3, "Menu Item D", 2.99, this.ingredients.slice(0), this.preferences.slice(0), 350, "Description D", 3.1, "")
     ];
 
     public getMenuItems(restaurantId: number): Observable<Array<MenuItem>> {
-        return Observable.of(this.menuItems);
+        return Observable.of(this.menuItems.slice(0));
     }
     public getAllPreferences(): Observable<Array<DietaryPreference>> {
-        return Observable.of(this.preferences);
+        return Observable.of(this.preferences.slice(0));
     }
-    public createMenuItem(restaurantId: number, menuItem: MenuItem) {
+    public createMenuItem(restaurantId: number, menuItem: MenuItem): Observable<boolean> {
+        menuItem.menuItemId = this.runningId;
+        this.runningId += 1;
         this.menuItems.push(menuItem);
+        return Observable.of(true);
     }
-    public editMenuItem(restaurantId: number, menuItem: MenuItem) {
+    public editMenuItem(restaurantId: number, menuItem: MenuItem): Observable<boolean> {
         let i = 0;
         let menuItemIndex = this.menuItems.findIndex((value: MenuItem, index: number, array: Array<MenuItem>) => {
             return value.menuItemId == menuItem.menuItemId;
         });
         if (menuItemIndex != -1) {
             this.menuItems[menuItemIndex] = menuItem;
+            return Observable.of(true);
         }
+        return Observable.of(false);
     }
 }

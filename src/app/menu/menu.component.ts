@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { MenuService } from './menu.service';
 import { MenuItem } from './menu-item/menu-item.model';
@@ -11,7 +11,7 @@ declare var $:any
   styleUrls: ['./menu.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit, OnDestroy {
 
   menuItemsData: Observable<Array<MenuItem>>;
   restaurantId: number = 0;
@@ -38,12 +38,28 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.menuItemsData = this.menuService.getMenuItems(this.restaurantId);
+    this.refresh();
+    $('#addModal').foundation();
+    $('#editModal').foundation();
+  }
+
+  ngOnDestroy() {
+    $('#addModal').parent().remove();
+    $('#editModal').parent().remove();
+  }
+
+  private refresh() {
+    this.menuService.getMenuItems(this.restaurantId).subscribe((next: Array<MenuItem>) => {
+          this.menuItemsData = Observable.of(
+            next.sort((a: MenuItem, b: MenuItem) => {
+              return a.name.localeCompare(b.name);
+            })
+          );
+        });
     this.menuService.getAllPreferences().subscribe((value: Array<DietaryPreference>) => {
       this.preferenceOptions = value;
       this.splitPreferences();
     });
-    $(document).foundation();
   }
 
   private splitPreferences() {
@@ -77,13 +93,21 @@ export class MenuComponent implements OnInit {
   }
 
   private submitCreateMenuItem() {
-    this.menuService.createMenuItem(this.restaurantId, this.captureFormInfo(null));
-    return false;
+    this.menuService.createMenuItem(this.restaurantId, this.captureFormInfo(null))
+      .subscribe((succeeded: boolean) => {
+        if (succeeded) {
+          this.refresh();
+        }
+      });
   }
 
   private submitEditMenuItem() {
-    this.closeEditForm();
-    this.menuService.editMenuItem(this.restaurantId, this.captureFormInfo(this.currentMenuItem));
+    this.menuService.editMenuItem(this.restaurantId, this.captureFormInfo(this.currentMenuItem))
+      .subscribe((succeeded: boolean) => {
+        if (succeeded) {
+          this.refresh();
+        }
+      });
   }
 
   private resetEditForm(existingMenuItem: MenuItem) {

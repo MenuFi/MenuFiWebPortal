@@ -16,10 +16,10 @@ export class MenuServerService implements MenuService {
     public getAllPreferences(): Observable<Array<DietaryPreference>> {
         throw new Error("Method not implemented.");
     }
-    public createMenuItem(restaurantId: number, menuItem: MenuItem) {
+    public createMenuItem(restaurantId: number, menuItem: MenuItem): Observable<boolean> {
         throw new Error("Method not implemented.");
     }
-    public editMenuItem(restaurantId: number, menuItem: MenuItem) {
+    public editMenuItem(restaurantId: number, menuItem: MenuItem): Observable<boolean> {
         throw new Error("Method not implemented.");
     }
 }

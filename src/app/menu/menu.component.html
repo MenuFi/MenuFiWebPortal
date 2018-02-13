@@ -142,7 +142,7 @@
 </div>
 
 <div class="reveal" id="editModal" data-reveal>
-    <button type="button" class="close-button" (click)="closeEditForm();"><i class="fa fa-times"></i></button>
+    <button type="button" class="close-button" data-close><i class="fa fa-times"></i></button>
     <h2>Edit menu item</h2>
     <form (ngSubmit)="submitEditMenuItem();" #editMenuItemForm="ngForm">
         <div class="grid-x grid-margin-x">
@@ -257,8 +257,8 @@
                 </div>
             </div>
             <div class="cell">
-                <button class="primary button" type="submit" [disabled]="!editMenuItemForm.form.valid">Save</button>
-                <button class="primary button" type="button" (click)="closeEditForm();">Cancel</button>
+                <button class="primary button" type="submit" [disabled]="!editMenuItemForm.form.valid" data-close>Save</button>
+                <button class="primary button" type="button" data-close>Cancel</button>
             </div>
         </div>
     </form>
