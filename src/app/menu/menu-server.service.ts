@@ -18,7 +18,7 @@ export class MenuServerService implements MenuService {
 
     public getMenuItems(restaurantId: number): Observable<Array<MenuItem>> {
         return new Observable<Array<MenuItem>>((observer) => {
-            let route = environment.serverBaseUrl + "/items?restaurantId=" + restaurantId;
+            let route = environment.serverBaseUrl + '/restaurants/' + restaurantId + '/items';
             this.http
                 .get(route)
                 .subscribe((res) => {
@@ -46,7 +46,7 @@ export class MenuServerService implements MenuService {
     }
     public createMenuItem(addMenuItem: AddMenuItem): Observable<boolean> {
         return new Observable((observer) => {
-            let route = environment.serverBaseUrl + "/items";
+            let route = environment.serverBaseUrl + '/restaurants/' + addMenuItem.restaurantId + '/items';
             let headers = new HttpHeaders({
                 'Content-Type': 'application/json'
             });
@@ -62,7 +62,21 @@ export class MenuServerService implements MenuService {
         });
     }
     public editMenuItem(restaurantId: number, menuItem: MenuItem): Observable<boolean> {
-        throw new Error("Method not implemented.");
+        return new Observable((observer) => {
+            let route = environment.serverBaseUrl + '/restaurants/' + restaurantId + '/items/' + menuItem.menuItemId;
+            let headers = new HttpHeaders({
+                'Content-Type': 'application/json'
+            });
+            this.http
+                .put(route, JSON.stringify(menuItem), { headers: headers })
+                .subscribe((res) => {
+                    observer.next(true);
+                    observer.complete();
+                }, (error) => {
+                    observer.next(false);
+                    observer.complete();
+                })
+        })
     }
 
     private mapMenuItems(value: any[]): Array<MenuItem> {
