@@ -10,14 +10,26 @@ export class CustomResponse<T> {
     }
 
     static fromResponse<E>(response: object): CustomResponse<E> {
-        let status: string = CustomResponse.getValueOrDefault<string>(response, "status", null);
-        let data: E = CustomResponse.getValueOrDefault<E>(response, "data", null);
-        let message: string = CustomResponse.getValueOrDefault<string>(response, "message", null);
+        return CustomResponse.fromResponseMap<E>(response, (value: any) => { return CustomResponse.defaultMap<E>(value); });
+    }
+
+    static fromResponseMap<E>(response: object, mapFunc: (value: any) => E) {
+        let status: string = CustomResponse.getValueOrDefault<string>(response, "status", null, CustomResponse.stringMap);
+        let data: E = CustomResponse.getValueOrDefault<E>(response, "data", null, mapFunc);
+        let message: string = CustomResponse.getValueOrDefault<string>(response, "message", null, CustomResponse.stringMap);
 
         return new CustomResponse<E>(status, data, message);
     }
 
-    static getValueOrDefault<E>(dict: object, key: string, def: E): E {
-        return (key in dict) ? (dict[key] as E) : def;
+    static getValueOrDefault<E>(dict: object, key: string, def: E, mapFunc: (value: any) => E): E {
+        return (key in dict) ? mapFunc(dict[key]) : def;
+    }
+
+    static stringMap(value: any): string {
+        return value ? value.toString() : null;
+    }
+
+    static defaultMap<E>(value: any): E {
+        return value ? value as E : null;
     }
 }

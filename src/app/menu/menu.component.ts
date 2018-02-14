@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewEncapsulation, EventEmitter } from '@
 import { Observable } from 'rxjs/Observable';
 import { MenuService } from './menu.service';
 import { MenuItem } from './menu-item/menu-item.model';
+import { AddMenuItem } from './menu-item/add-menu-item.model';
 import { DietaryPreference } from './menu-item/dietary-preference.model';
 declare var $:any
 
@@ -14,7 +15,7 @@ declare var $:any
 export class MenuComponent implements OnInit, OnDestroy {
 
   menuItemsData: Observable<Array<MenuItem>>;
-  restaurantId: number = 0;
+  restaurantId: number = 1;
 
   newName: string = '';
   newDescription: string = '';
@@ -93,7 +94,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   private submitCreateMenuItem() {
-    this.menuService.createMenuItem(this.restaurantId, this.captureFormInfo(null))
+    this.menuService.createMenuItem(this.captureFormInfoAdd())
       .subscribe((succeeded: boolean) => {
         if (succeeded) {
           this.refresh();
@@ -102,7 +103,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   private submitEditMenuItem() {
-    this.menuService.editMenuItem(this.restaurantId, this.captureFormInfo(this.currentMenuItem))
+    this.menuService.editMenuItem(this.restaurantId, this.captureFormInfoEdit(this.currentMenuItem))
       .subscribe((succeeded: boolean) => {
         if (succeeded) {
           this.refresh();
@@ -118,13 +119,13 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.newImageUrl = existingMenuItem.pictureUri;
     this.newIngredients = existingMenuItem.ingredients.slice(0);
     this.newPreferencesMask = this.allPreferences.map((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
-      return existingMenuItem.dietaryPreferences.some((menuItemPreference: DietaryPreference, menuItemIndex: number, menuItemArray: Array<DietaryPreference>) => {
-        return (value.valueOf() == menuItemPreference.valueOf()) && !value.isRestriction();
+      return existingMenuItem.dietaryPreferences.some((id: number, menuItemIndex: number, menuItemArray: Array<number>) => {
+        return (value.dietaryPreferenceId == id) && !value.isRestriction();
       });
     });
     this.newRestrictionsMask = this.allRestrictions.map((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
-      return existingMenuItem.dietaryPreferences.some((menuItemRestriction: DietaryPreference, menuItemIndex: number, menuItemArray: Array<DietaryPreference>) => {
-        return (value.valueOf() == menuItemRestriction.valueOf()) && value.isRestriction();
+      return existingMenuItem.dietaryPreferences.some((id: number, menuItemIndex: number, menuItemArray: Array<number>) => {
+        return (value.dietaryPreferenceId == id) && value.isRestriction();
       });
     });
   }
@@ -139,27 +140,51 @@ export class MenuComponent implements OnInit, OnDestroy {
     $('#editModal').foundation('close');
   }
 
-  private captureFormInfo(existingMenuItem: MenuItem): MenuItem {
-    let newPreferences: Array<DietaryPreference> = this.allPreferences.filter((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
-      return this.newPreferencesMask[index];
-    });
-
-    let newRestrictions: Array<DietaryPreference> = this.allRestrictions.filter((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
-      return this.newRestrictionsMask[index];
-    });
-
-    let newMenuItemPreferences = [].concat(newPreferences).concat(newRestrictions);
-    return new MenuItem(
-      existingMenuItem ? existingMenuItem.menuItemId : -1,
+  private captureFormInfoAdd(): AddMenuItem {
+    let newMenuItemPreferences: Array<number> = this.captureFormInfoPreferences();
+    return new AddMenuItem(
+      this.restaurantId,
       this.newName,
       this.newPrice,
       this.newIngredients,
       newMenuItemPreferences,
       this.newCalories,
       this.newDescription,
-      existingMenuItem ? existingMenuItem.rating : 0,
+      0,
       this.newImageUrl
     );
+  }
+
+  private captureFormInfoEdit(existingMenuItem: MenuItem): MenuItem {
+    let newMenuItemPreferences: Array<number> = this.captureFormInfoPreferences();
+    return new MenuItem(
+      existingMenuItem.menuItemId,
+      this.restaurantId,
+      this.newName,
+      this.newPrice,
+      this.newIngredients,
+      newMenuItemPreferences,
+      this.newCalories,
+      this.newDescription,
+      existingMenuItem.rating,
+      this.newImageUrl
+    );
+  }
+
+  private captureFormInfoPreferences(): Array<number> {
+    let newPreferences: Array<number> = this.allPreferences.filter((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
+      return this.newPreferencesMask[index];
+    }).map((value2: DietaryPreference) => {
+      return value2.dietaryPreferenceId;
+    });
+
+    let newRestrictions: Array<number> = this.allRestrictions.filter((value: DietaryPreference, index: number, array: Array<DietaryPreference>) => {
+      return this.newRestrictionsMask[index];
+    }).map((value2: DietaryPreference) => {
+      return value2.dietaryPreferenceId;
+    });
+
+    return [].concat(newPreferences).concat(newRestrictions);
   }
 
   trackByIndex(index: number, value: any) {

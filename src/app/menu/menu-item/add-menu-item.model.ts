@@ -1,5 +1,4 @@
-export class MenuItem {
-    public menuItemId: number;
+export class AddMenuItem {
     public restaurantId: number;
     public name: string;
     public price: number;
@@ -10,8 +9,7 @@ export class MenuItem {
     public rating: number;
     public pictureUri: string;
 
-    public constructor(menuItemId: number, restaurantId: number, name: string, price: number, ingredients: Array<string>, dietaryPreferences: Array<number>, calories: number, description: string, rating: number, pictureUri: string) {
-        this.menuItemId = menuItemId;
+    public constructor(restaurantId: number, name: string, price: number, ingredients: Array<string>, dietaryPreferences: Array<number>, calories: number, description: string, rating: number, pictureUri: string) {
         this.restaurantId = restaurantId;
         this.name = name;
         this.price = price;
