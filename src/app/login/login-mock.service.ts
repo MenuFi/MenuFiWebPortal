@@ -17,7 +17,8 @@ export class LoginMockService implements LoginService {
     constructor(private router: Router) {
         this.userBank = {
             "user": "password",
-            "user2": "password2"
+            "user2": "password2",
+            "user@email.com": "password"
         };
     }
 

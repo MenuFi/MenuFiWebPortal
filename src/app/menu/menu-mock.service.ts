@@ -9,7 +9,7 @@ import { DietaryPreference } from './menu-item/dietary-preference.model';
 @Injectable()
 export class MenuMockService implements MenuService {
     private runningId: number = 4;
-    private ingredients: Array<string> = ["Ingredient 1", "Ingredient 2", "Ingredient 3", "Ingredient 4", "Ingredient 5", "Ingredient 6"];
+    private ingredients: Array<string> = ["Angus Beef", "Arugula"];
     private preferences: Array<DietaryPreference> = [
         new DietaryPreference(0, "Peanut", 1),
         new DietaryPreference(1, "Vegetarian", 0),
@@ -18,11 +18,9 @@ export class MenuMockService implements MenuService {
     ];
     private preferencesIds: Array<number> = [0, 1, 2, 3];
     private menuItems: Array<MenuItem> = [
-        new MenuItem(0, 1, "Menu Item A", 5.99, this.ingredients.slice(0), this.preferencesIds.slice(0), 100, "Description A", 3.5, ""),
-        new MenuItem(1, 1, "Menu Item B", 4.99, this.ingredients.slice(0), this.preferencesIds.slice(0), 150, "Description B", 3.3, ""),
-        new MenuItem(2, 1, "Menu Item C", 7.99, this.ingredients.slice(0), this.preferencesIds.slice(0), 200, "Description C", 3.6, ""),
-        new MenuItem(3, 1, "Menu Item D", 2.99, this.ingredients.slice(0), this.preferencesIds.slice(0), 350, "Description D", 3.1, "")
-    ];
+        new MenuItem(0, 1, "Arugula Burger", 11.5, ["Angus Beef", "Arugula", "Gruyere"], [0, 3], 2500, "A yummy and healthy? burger", 5, "https://media.istockphoto.com/photos/beef-burger-with-arugula-tomatoes-red-onion-and-mozzarella-cheese-picture-id613899300"),
+        new MenuItem(1, 1, "Arugula Salad", 32.5, ["Arugula", "Cherry Tomatoes", "Parmesan", "Lime"], [1], 500, "A fresh salad", 5, "https://thumb1.shutterstock.com/display_pic_with_logo/1059122/284819669/stock-photo-arugula-salad-with-pine-nuts-on-the-plate-in-italian-restaurant-284819669.jpg")
+    ]
 
     public getMenuItems(restaurantId: number): Observable<Array<MenuItem>> {
         return Observable.of(this.menuItems.slice(0));
