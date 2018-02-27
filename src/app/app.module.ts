@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
 import { MenuModule } from './menu/menu.module';
+import { MetricsModule } from './metrics/metrics.module';
 import { AppRoutingModule } from './app-routing.module';
 
 
@@ -27,6 +28,7 @@ let loginServiceImpl = environment.production ? LoginServerService : LoginMockSe
     FormsModule,
     HttpClientModule,
     MenuModule,
+    MetricsModule,
     AppRoutingModule
   ],
   providers: [{ provide: LoginService, useClass: loginServiceImpl }, AuthGuard],
