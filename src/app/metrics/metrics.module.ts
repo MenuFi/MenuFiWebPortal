@@ -6,7 +6,7 @@ import { MetricsRoutingModule } from './metrics-routing.module';
 
 import { environment } from '../../environments/environment';
 import { MetricsDashComponent } from './metrics-dash/metrics-dash.component';
-import { MetricComponent } from './metrics-dash/metric/metric.component';
+import { MetricGraphComponent } from './metrics-dash/metric-graph/metric-graph.component';
 import { MetricsService } from './metrics.service';
 import { MetricsServerService } from './metrics-server.service';
 import { MetricsMockService } from './metrics-mock.service';
@@ -20,7 +20,7 @@ let metricsServiceImpl = environment.production ? MetricsServerService : Metrics
     HttpClientModule,
     MetricsRoutingModule
   ],
-  declarations: [MetricsDashComponent, MetricComponent],
+  declarations: [MetricsDashComponent, MetricGraphComponent],
   providers: [{ provide: MetricsService, useClass: metricsServiceImpl }]
 })
 export class MetricsModule { }

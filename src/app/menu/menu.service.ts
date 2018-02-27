@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { DietaryPreference } from './menu-item/dietary-preference.model';
 
 export abstract class MenuService {
+    public abstract getMenuItem(restaurantId: number, menuItemId: number): Observable<MenuItem>;
     public abstract getMenuItems(restaurantId: number): Observable<Array<MenuItem>>;
     public abstract getAllPreferences(): Observable<Array<DietaryPreference>>;
     public abstract createMenuItem(addMenuItem: AddMenuItem): Observable<boolean>;

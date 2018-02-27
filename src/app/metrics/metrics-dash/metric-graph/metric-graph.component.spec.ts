@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MetricComponent } from './metric.component';
+import { MetricGraphComponent } from './metric-graph.component';
 
-describe('MetricComponent', () => {
-  let component: MetricComponent;
-  let fixture: ComponentFixture<MetricComponent>;
+describe('MetricGraphComponent', () => {
+  let component: MetricGraphComponent;
+  let fixture: ComponentFixture<MetricGraphComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MetricComponent ]
+      declarations: [ MetricGraphComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MetricComponent);
+    fixture = TestBed.createComponent(MetricGraphComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

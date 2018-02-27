@@ -22,6 +22,17 @@ export class MenuMockService implements MenuService {
         new MenuItem(1, 1, "Arugula Salad", 32.5, ["Arugula", "Cherry Tomatoes", "Parmesan", "Lime"], [1], 500, "A fresh salad", 5, "https://thumb1.shutterstock.com/display_pic_with_logo/1059122/284819669/stock-photo-arugula-salad-with-pine-nuts-on-the-plate-in-italian-restaurant-284819669.jpg")
     ]
 
+    public getMenuItem(restaurantId: number, menuItemId: number): Observable<MenuItem> {
+        let matches: Array<MenuItem> = this.menuItems.filter(
+            (val: MenuItem, index: number, array: Array<MenuItem>) => {
+                return val.menuItemId == menuItemId;
+            }
+        );
+        if (matches.length == 1) {
+            return Observable.of(matches[0]);
+        }
+        return Observable.of(null);
+    }
     public getMenuItems(restaurantId: number): Observable<Array<MenuItem>> {
         return Observable.of(this.menuItems.slice(0));
     }

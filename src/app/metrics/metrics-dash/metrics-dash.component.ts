@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Metric } from './metric-graph/metric.model';
+import { MetricsService } from '../metrics.service';
 
 @Component({
   selector: 'app-metrics-dash',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MetricsDashComponent implements OnInit {
 
-  constructor() { }
+  metrics: Array<Metric>;
+
+  constructor(private metricsService: MetricsService) { }
 
   ngOnInit() {
+    this.refresh();
+  }
+
+  refresh() {
+    this.metricsService.getMetrics(1, 1).subscribe((next: Array<Metric>) => {
+      this.metrics = next;
+    });
   }
 
 }

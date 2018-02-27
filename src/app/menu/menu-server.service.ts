@@ -16,6 +16,20 @@ export class MenuServerService implements MenuService {
         
     }
 
+    public getMenuItem(restaurantId: number, menuItemId: number): Observable<MenuItem> {
+        return new Observable<MenuItem>((observer) => {
+            let route = environment.serverBaseUrl + '/restaurants/' + restaurantId + '/items/' + menuItemId;
+            this.http
+                .get(route)
+                .subscribe((res) => {
+                    let response: CustomResponse<MenuItem> = CustomResponse.fromResponseMap<MenuItem>(res, this.mapMenuItem);
+                    observer.next(response.data);
+                    observer.complete();
+                }, (error) => {
+                    observer.complete();
+                });
+        });
+    }
     public getMenuItems(restaurantId: number): Observable<Array<MenuItem>> {
         return new Observable<Array<MenuItem>>((observer) => {
             let route = environment.serverBaseUrl + '/restaurants/' + restaurantId + '/items';
@@ -82,20 +96,24 @@ export class MenuServerService implements MenuService {
     private mapMenuItems(value: any[]): Array<MenuItem> {
         let result: Array<MenuItem> = [];
         for (let i = 0; i < value.length; i += 1) {
-            result.push(new MenuItem(
-                value[i]["menuItemId"],
-                value[i]["restaurantId"],
-                value[i]["name"],
-                value[i]["price"],
-                value[i]["ingredients"],
-                value[i]["dietaryPreferences"],
-                value[i]["calories"],
-                value[i]["description"],
-                value[i]["rating"],
-                value[i]["pictureUri"]
-            ));
+            result.push(this.mapMenuItem(value[i]));
         }
         return result;
+    }
+
+    private mapMenuItem(value: any): MenuItem {
+        return new MenuItem(
+            value["menuItemId"],
+            value["restaurantId"],
+            value["name"],
+            value["price"],
+            value["ingredients"],
+            value["dietaryPreferences"],
+            value["calories"],
+            value["description"],
+            value["rating"],
+            value["pictureUri"]
+        );
     }
 
     private mapDietaryPreferences(value: any[]): Array<DietaryPreference> {
