@@ -2,4 +2,4 @@
 <br>
 <p>{{graphTime}}</p>
 <p>{{metrics.length}} metrics</p>
-<p *ngFor="let item of metrics">{{item.timestamp}}</p>
+<p *ngFor="let item of metrics">{{item.timestamp | date:'long'}}</p>
