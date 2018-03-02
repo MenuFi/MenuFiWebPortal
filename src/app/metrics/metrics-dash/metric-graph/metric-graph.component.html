@@ -1,5 +1,5 @@
 <h3>Metrics Graph for {{menuItemModel.name}}</h3>
 <br>
-<p>{{graphTime}}</p>
-<p>{{metrics.length}} metrics</p>
-<p *ngFor="let item of metrics">{{item.timestamp | date:'long'}}</p>
+<div>
+    <canvas id="myCanvas" #myCanvas>{{ chart }}</canvas>
+</div>
