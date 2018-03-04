@@ -68,17 +68,26 @@ export class MetricGraphComponent implements OnInit, OnChanges {
     let maxTimeStamp = sortedMetrics[0].getTimestampDate();
     let bucketSizeMinutes = 120;
     maxTimeStamp.setMinutes(maxTimeStamp.getMinutes() + bucketSizeMinutes);
+    maxTimeStamp.setMinutes(0);
     let xVal = [];
     let yVal = [];
     let ySum = 0;
+    let date = -1;
     sortedMetrics.forEach((res) => {
       if (res.getTimestampDate() < maxTimeStamp) {
         ySum += 1;
       } else {
-        xVal.push(maxTimeStamp);
+        if ((maxTimeStamp.getDate()) != date) {
+          date = maxTimeStamp.getDate();
+          xVal.push((maxTimeStamp.getMonth() + 1) + "/" + date + " " +  maxTimeStamp.getHours()  + ":00");
+        } else {
+          xVal.push(maxTimeStamp.getHours() + ":00");
+        }
         yVal.push(ySum);
-        ySum = 0;
+        ySum = 1;
         maxTimeStamp.setMinutes(maxTimeStamp.getMinutes() + bucketSizeMinutes);
+        // console.log(maxTimeStamp.getMinutes());
+        // console.log(ySum)
       }
     });
     return {
