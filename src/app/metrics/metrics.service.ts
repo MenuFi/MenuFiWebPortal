@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
-import { Metric } from './metrics-dash/metric-graph/metric.model';
+import { MenuItemClick } from './metrics-dash/metric-graph/menu-item-click.model';
 
 export abstract class MetricsService {
-    public abstract getMetrics(restaurantId: number, menuItemId: number): Observable<Array<Metric>>;
+    public abstract getMenuItemClicks(restaurantId: number, menuItemId: number): Observable<Array<MenuItemClick>>;
 }

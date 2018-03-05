@@ -1,4 +1,4 @@
-export class Metric {
+export class MenuItemClick {
     public metricId: number;
     public restaurantId: number;
     public menuItemId: number;

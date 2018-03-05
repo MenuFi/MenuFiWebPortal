@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Metric } from './metric-graph/metric.model';
+import { MenuItemClick } from './metric-graph/menu-item-click.model';
 import { MetricsService } from '../metrics.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { MetricsService } from '../metrics.service';
 })
 export class MetricsDashComponent implements OnInit {
 
-  metrics: Array<Metric>;
+  metrics: Array<MenuItemClick>;
 
   constructor(private metricsService: MetricsService) { }
 
@@ -18,7 +18,7 @@ export class MetricsDashComponent implements OnInit {
   }
 
   refresh() {
-    this.metricsService.getMetrics(1, 1).subscribe((next: Array<Metric>) => {
+    this.metricsService.getMenuItemClicks(1, 1).subscribe((next: Array<MenuItemClick>) => {
       this.metrics = next;
     });
   }

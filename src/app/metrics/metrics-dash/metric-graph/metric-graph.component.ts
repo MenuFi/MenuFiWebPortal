@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnChanges, Input, SimpleChanges } from '@angular/core';
-import { Metric } from './metric.model';
+import { MenuItemClick } from './menu-item-click.model';
 import { MenuItem } from '../../../menu/menu-item/menu-item.model';
 import { MenuService } from '../../../menu/menu.service';
 import { Chart } from 'chart.js';
@@ -12,7 +12,7 @@ import { Chart } from 'chart.js';
 
 export class MetricGraphComponent implements OnInit, OnChanges {
 
-  @Input() metrics: Array<Metric>;
+  @Input() metrics: Array<MenuItemClick>;
   graphTime: string;
   menuItemModel: MenuItem;
 
@@ -60,7 +60,7 @@ export class MetricGraphComponent implements OnInit, OnChanges {
   }
 
   parseData(next) {
-    let sortedMetrics = next.sort((a: Metric, b: Metric) => {
+    let sortedMetrics = next.sort((a: MenuItemClick, b: MenuItemClick) => {
       if (a.getTimestampDate() > b.getTimestampDate()) {return 1;}
       if (a.getTimestampDate() < b.getTimestampDate()) {return -1;}
       return 0;
