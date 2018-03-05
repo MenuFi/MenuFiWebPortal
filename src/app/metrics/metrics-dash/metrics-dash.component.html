@@ -1,5 +1,2 @@
 <h2>Metrics Dashboard</h2>
-<br>
-<a href="javascript:void(0);" class="button primary" (click)="this.refresh();">Refresh</a>
-<br>
-<app-metric-graph [metrics]=this.metrics></app-metric-graph>
+<app-metric-graph [restaurantId]="this.restaurantId"></app-metric-graph>

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItemClick } from './metric-graph/menu-item-click.model';
 import { MetricsService } from '../metrics.service';
 
 @Component({
@@ -9,18 +8,12 @@ import { MetricsService } from '../metrics.service';
 })
 export class MetricsDashComponent implements OnInit {
 
-  metrics: Array<MenuItemClick>;
+  restaurantId: number;
 
   constructor(private metricsService: MetricsService) { }
 
   ngOnInit() {
-    this.refresh();
-  }
-
-  refresh() {
-    this.metricsService.getMenuItemClicks(1, 1).subscribe((next: Array<MenuItemClick>) => {
-      this.metrics = next;
-    });
+    this.restaurantId = 1;
   }
 
 }
