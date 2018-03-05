@@ -1,5 +1,13 @@
-<h3>Metrics Graph for {{menuItemModel.name}}</h3>
-<br>
-<div>
-    <canvas id="myCanvas" #myCanvas>{{ chart }}</canvas>
+<div class="card">
+    <div class="card-divider">
+      <span class="clearfix">
+        <h4>User Clicks for {{menuItemModel.name}}</h4>
+        <!-- <button type="button" class="button primary float-right" (click)="openEditForm();">Edit</button> -->
+      </span>
+    </div>
+    <div class="card-section">
+            <div>
+                 <canvas id="myCanvas" #myCanvas>{{ chart }}</canvas>
+            </div>
+    </div>
 </div>
