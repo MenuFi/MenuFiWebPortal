@@ -2,29 +2,10 @@
     <div class="card-divider">
       <span class="clearfix">
         <!-->TODO: Refactor this title name once multiple items graphed</!-->
-        <h4>User Clicks for {{this.currentMenuItem ? this.currentMenuItem.name : ""}}</h4>
+        <h4>User Clicks for Top Menu Items for Past 48 Hours</h4>
       </span>
     </div>
     <div class="card-section">
-      <div class="grid-x grid-margin-x">
-        <div class="cell medium-12 large-2" style="overflow-y:scroll">
-          <form (ngSubmit)="$event.preventDefault();" #selectMenuItemForm="ngForm">
-            <button class="primary button" type="button" (click)="this.updateMetrics();">Update</button>
-            <div *ngFor="let menuItemMask of menuItemMasks; let i = index; trackBy:trackByIndex" style="display:inline-block">
-                <input
-                    type="checkbox"
-                    id="menuItemMask{{i}}"
-                    name="menuItemMask{{i}}"
-                    value="{{menuItemMasks[i]}}"
-                    [(ngModel)]="menuItemMasks[i]"
-                    />
-                <label for="menuItemMask{{i}}">{{this.menuItems[i].name}}</label>
-            </div>
-          </form>
-        </div>
-        <div class="cell medium-12 large-10">
-            <canvas id="myCanvas" #myCanvas>{{ chart }}</canvas>
-        </div>
-      </div>
+      <canvas id="myCanvas" #myCanvas>{{ chart }}</canvas>
     </div>
 </div>

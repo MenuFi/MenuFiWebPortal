@@ -17,18 +17,21 @@ export class MetricGraphComponent implements OnInit {
   menuItems: Array<MenuItem>;
   menuItemMasks: Array<boolean>;
   pendingGets: number = 0;
-  currentMenuItem: MenuItem; // TODO: Remove when we can graph multiple menu items
+  selectedMenuItems: Array<MenuItem>;
   chart: Chart;
+  colors: Array<String>;
 
   @ViewChild("myCanvas") canvasElement: ElementRef;
 
   constructor(private menuService: MenuService, private metricsService: MetricsService) {
     this.menuItems = [];
     this.menuItemMasks = [];
+    this.selectedMenuItems = [];
+    this.colors = ["#00ADF9", "#666699", "#ff99cc", "#ff9933", "#cc3300", "#99ff99", "#00ffff"];
   }
 
   ngOnInit() {
-    this.updateMenuItems();
+    
   }
 
   ngAfterViewInit() {
@@ -39,14 +42,14 @@ export class MetricGraphComponent implements OnInit {
         datasets: [
           { 
             data: [],
-            borderColor: "#3cba9f",
             fill: false
           },
         ]
       },
       options: {
         legend: {
-          display: false
+          display: true,
+          position: "left"
         },
         scales: {
           xAxes: [{
@@ -62,22 +65,23 @@ export class MetricGraphComponent implements OnInit {
         }
       }
     });
+
+    this.updateMenuItems();
   }
 
   trackByIndex(index: number, value: any) {
     return index;
   }
 
-  parseData(next) {
+  parseData(next, timeStamp: Date) {
     let sortedMetrics = next.sort((a: MenuItemClick, b: MenuItemClick) => {
       if (a.getTimestampDate() > b.getTimestampDate()) {return 1;}
       if (a.getTimestampDate() < b.getTimestampDate()) {return -1;}
       return 0;
     })
-    let maxTimeStamp = sortedMetrics[0].getTimestampDate();
+    let maxTimeStamp = new Date(timeStamp.getTime())
     let bucketSizeMinutes = 120;
     maxTimeStamp.setMinutes(maxTimeStamp.getMinutes() + bucketSizeMinutes);
-    maxTimeStamp.setMinutes(0);
     let xVal = [];
     let yVal = [];
     let ySum = 0;
@@ -95,14 +99,18 @@ export class MetricGraphComponent implements OnInit {
         yVal.push(ySum);
         ySum = 1;
         maxTimeStamp.setMinutes(maxTimeStamp.getMinutes() + bucketSizeMinutes);
-        // console.log(maxTimeStamp.getMinutes());
-        // console.log(ySum)
       }
     });
     return {
       xVal: xVal,
       yVal: yVal
     }
+  }
+
+  private getSelectedMenuItems(): MenuItem[] {
+    return this.menuItems.filter((menuItem: MenuItem, index: number, menuItems: MenuItem[]) => {
+      return this.menuItemMasks[index];
+    });
   }
   
   private updateMenuItems(): void {
@@ -112,45 +120,65 @@ export class MetricGraphComponent implements OnInit {
       this.menuItems = next;
       this.metricsDict = {};
       this.menuItems.forEach((menuItem: MenuItem, index: number, menuItems: MenuItem[]) => {
-        this.menuItemMasks[index] = false;
+        this.menuItemMasks[index] = true;
       });
+      this.updateMetrics();
     });
   }
 
   private updateMetrics(): void {
-    this.menuItems.forEach((menuItem: MenuItem, index: number, menuItems: MenuItem[]) => {
-      // Only update metrics for the selected menu items
-      if (this.menuItemMasks[index]) {
-        this.pendingGets += 1;
-        this.metricsDict[menuItem.menuItemId] = [];
-        this.metricsService.getMenuItemClicks(this.restaurantId, menuItem.menuItemId).subscribe((nextMetrics) => {
-          this.metricsDict[menuItem.menuItemId] = nextMetrics;
-          this.pendingGets -= 1;
-          if (this.pendingGets === 0) {
-            this.updateChart();
-          }
-        });
-      }
+    let relevantMenuItems = this.getSelectedMenuItems();
+    this.pendingGets += relevantMenuItems.length;
+    relevantMenuItems.forEach((menuItem: MenuItem, index: number, menuItems: MenuItem[]) => {
+      console.log(menuItem.menuItemId);
+      this.metricsDict[menuItem.menuItemId] = [];
+      this.metricsService.getMenuItemClicks(this.restaurantId, menuItem.menuItemId).subscribe((nextMetrics) => {
+        this.metricsDict[menuItem.menuItemId] = nextMetrics;
+        this.pendingGets -= 1;
+        this.updateChart();
+      });
     });
   }
 
   private updateChart(): void {
-    console.log("Update")
+    console.log(this.pendingGets);
+    console.log(this.chart);
+    console.log(this.pendingGets === 0);
     if (this.chart && this.pendingGets === 0) {
       // TODO: Update this to graph multiple data points
-      this.currentMenuItem = null;
-      for (let i = 0; i < this.menuItemMasks.length; i += 1) {
-        if (this.menuItemMasks[i] && !this.currentMenuItem) {
-          this.currentMenuItem = this.menuItems[i];
-        }
-      }
+      this.selectedMenuItems = this.getSelectedMenuItems();
 
-      if (this.currentMenuItem) {
-        let data = this.parseData(this.metricsDict[this.currentMenuItem.menuItemId])
-        this.chart.data.labels = data.xVal;
-        this.chart.data.datasets[0].data = data.yVal;
+      let maxTimeStamp = new Date();
+      maxTimeStamp.setHours(maxTimeStamp.getHours() - 48);
+      maxTimeStamp.setMinutes(0);
+
+      let dataSets = [];
+      
+      if (this.selectedMenuItems.length > 0) {
+        for (let j = 0; j < this.selectedMenuItems.length; j += 1) {
+          let data = this.parseData(this.metricsDict[this.selectedMenuItems[j].menuItemId], maxTimeStamp)
+          if (j == 0) {
+            this.chart.data.labels = data.xVal;
+          }
+          dataSets.push({
+            data: data.yVal,
+            label: this.selectedMenuItems[j].name,
+            borderColor: this.colors[j % 7],
+            fill: false
+          })
+        }
+
+        
+        this.chart.data.datasets = dataSets;
         this.chart.update();
       }
+
+      // if (this.selectedMenuItems.length > 0) {
+      //   let data = this.parseData(this.metricsDict[this.currentMenuItem.menuItemId], maxTimeStamp)
+      //   this.chart.data.labels = data.xVal;
+      //   this.chart.data.datasets[0].data = data.yVal;
+      //   this.chart.update();
+      // }
     }
 
   }

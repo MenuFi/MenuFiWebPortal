@@ -35,7 +35,7 @@ export class MetricsMockService extends MetricsService {
             if (this.menuItemClicks[menuItemId].length > 0 && replace) {
                 this.menuItemClicks[menuItemId].shift();
             }
-            this.menuItemClicks[menuItemId].push(new MenuItemClick(n - i - 1, 1, 1, currDate.toISOString()));
+            this.menuItemClicks[menuItemId].push(new MenuItemClick(n - i - 1, 1, menuItemId, currDate.toISOString()));
             let delta = Math.floor(Math.random() * 55) + 5;
             currDate.setMinutes(currDate.getMinutes() + delta);
         }
