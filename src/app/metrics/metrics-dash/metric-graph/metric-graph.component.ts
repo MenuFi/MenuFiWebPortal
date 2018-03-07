@@ -20,6 +20,8 @@ export class MetricGraphComponent implements OnInit {
   selectedMenuItems: Array<MenuItem>;
   chart: Chart;
   colors: Array<String>;
+  toggleSwitch: Array<String>
+  toggleBinary: boolean = true;
 
   @ViewChild("myCanvas") canvasElement: ElementRef;
 
@@ -28,6 +30,7 @@ export class MetricGraphComponent implements OnInit {
     this.menuItemMasks = [];
     this.selectedMenuItems = [];
     this.colors = ["#00ADF9", "#666699", "#ff99cc", "#ff9933", "#cc3300", "#99ff99", "#00ffff"];
+    this.toggleSwitch = ["Show All", "Hide All"];
   }
 
   ngOnInit() {
@@ -130,7 +133,6 @@ export class MetricGraphComponent implements OnInit {
     let relevantMenuItems = this.getSelectedMenuItems();
     this.pendingGets += relevantMenuItems.length;
     relevantMenuItems.forEach((menuItem: MenuItem, index: number, menuItems: MenuItem[]) => {
-      console.log(menuItem.menuItemId);
       this.metricsDict[menuItem.menuItemId] = [];
       this.metricsService.getMenuItemClicks(this.restaurantId, menuItem.menuItemId).subscribe((nextMetrics) => {
         this.metricsDict[menuItem.menuItemId] = nextMetrics;
@@ -141,13 +143,9 @@ export class MetricGraphComponent implements OnInit {
   }
 
   private updateChart(): void {
-    console.log(this.pendingGets);
-    console.log(this.chart);
-    console.log(this.pendingGets === 0);
     if (this.chart && this.pendingGets === 0) {
       // TODO: Update this to graph multiple data points
       this.selectedMenuItems = this.getSelectedMenuItems();
-
       let maxTimeStamp = new Date();
       maxTimeStamp.setHours(maxTimeStamp.getHours() - 48);
       maxTimeStamp.setMinutes(0);
@@ -167,9 +165,40 @@ export class MetricGraphComponent implements OnInit {
             fill: false
           })
         }
+        dataSets.push({
+          data: [],
+          label: "Hide All",
+          borderColor: "#000000",
+          fill: false
+        })
 
         
         this.chart.data.datasets = dataSets;
+        
+        this.chart.options.legend.onClick = (e, legendItem) => {
+          let i = legendItem.datasetIndex;
+          let labels = this.chart.legend.legendItems;
+          let meta = this.chart.getDatasetMeta(i);
+          if (i == labels.length - 1) {
+            for (let j = 0; j < i; j++) {
+              let otherMeta = this.chart.getDatasetMeta(j);
+              otherMeta.hidden = this.toggleBinary;
+            }
+            dataSets.pop();
+            this.toggleBinary = !this.toggleBinary;
+            let label = this.toggleBinary ? this.toggleSwitch[1] : this.toggleSwitch[0];
+            dataSets.push({
+              data: [],
+              label: label,
+              borderColor: "#000000",
+              fill: false
+            })
+
+          } else {
+            meta.hidden = meta.hidden === null ? !this.chart.data.datasets[i].hidden : null;
+          }
+          this.chart.update();
+        };
         this.chart.update();
       }
 
