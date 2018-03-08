@@ -76,50 +76,42 @@ export class MetricGraphComponent implements OnInit {
     return index;
   }
 
-  parseData(next, timeStamp: Date) {
+  parseData(next, map) {
     let sortedMetrics = next.sort((a: MenuItemClick, b: MenuItemClick) => {
       if (a.getTimestampDate() > b.getTimestampDate()) {return 1;}
       if (a.getTimestampDate() < b.getTimestampDate()) {return -1;}
       return 0;
     })
-    let maxTimeStamp = new Date(timeStamp.getTime())
-    let minTimeStamp = new Date(timeStamp.getTime())
-    let bucketSizeMinutes = 120;
-    maxTimeStamp.setMinutes(maxTimeStamp.getMinutes() + bucketSizeMinutes);
-    let xVal = [];
+    let counter = 0;
     let yVal = [];
     let ySum = 0;
+    let outRange = 0;
+    let yTotal = 0;
     let date = -1;
     sortedMetrics.forEach((res) => {
-      if (res.getTimestampDate() >= minTimeStamp && res.getTimestampDate() < maxTimeStamp) {
+      if (res.getTimestampDate() >= map[counter].dateValue && res.getTimestampDate() < map[counter + 1].dateValue) {
         ySum += 1;
-      } else if (res.getTimestampDate() > maxTimeStamp) {
-        minTimeStamp.setMinutes(minTimeStamp.getMinutes() + bucketSizeMinutes);
-        maxTimeStamp.setMinutes(maxTimeStamp.getMinutes() + bucketSizeMinutes);
-        while (res.getTimestampDate() > maxTimeStamp) {
-          ySum = 0;
+        yTotal += 1;
+      } else if (res.getTimestampDate() > map[counter + 1].dateValue) {
+        while (counter < map.length - 1 && res.getTimestampDate() > map[counter + 1].dateValue) {
           yVal.push(ySum);
-          if ((maxTimeStamp.getDate()) != date) {
-            date = maxTimeStamp.getDate();
-            xVal.push((maxTimeStamp.getMonth() + 1) + "/" + date + " " +  maxTimeStamp.getHours()  + ":00");
-          } else {
-            xVal.push(maxTimeStamp.getHours() + ":00");
-          }
-          minTimeStamp.setMinutes(minTimeStamp.getMinutes() + bucketSizeMinutes);
-          maxTimeStamp.setMinutes(maxTimeStamp.getMinutes() + bucketSizeMinutes);
+          counter += 1;
+          ySum = 0;
         }
-        if ((maxTimeStamp.getDate()) != date) {
-          date = maxTimeStamp.getDate();
-          xVal.push((maxTimeStamp.getMonth() + 1) + "/" + date + " " +  maxTimeStamp.getHours()  + ":00");
-        } else {
-          xVal.push(maxTimeStamp.getHours() + ":00");
-        }
-        yVal.push(ySum);
-        ySum = 1;
+        yTotal += 1;
+        ySum += 1;
+      } else {
+        outRange += 1;
       }
     });
+    yVal.push(ySum);
+    if (yVal.length < map.length) {
+      for(let j = yVal.length; j < map.length; j++) {
+        yVal.push(0);
+      }
+    }
+    // console.log(xVal);
     return {
-      xVal: xVal,
       yVal: yVal
     }
   }
@@ -156,21 +148,50 @@ export class MetricGraphComponent implements OnInit {
     });
   }
 
+  private getXcolumns() {
+    let maxTimeStamp = new Date();
+    let endPoint = new Date(maxTimeStamp);
+    maxTimeStamp.setHours(maxTimeStamp.getHours() - 50);
+    maxTimeStamp.setMinutes(0);
+    let map = [];
+    let bucketSizeMinutes = 120;
+    let date = -1;
+    while(maxTimeStamp < endPoint) {
+      let current = new Date(maxTimeStamp);
+      if (maxTimeStamp.getDate() != date || map.length == 1) {
+        date = maxTimeStamp.getDate();
+        map.push({label : (maxTimeStamp.getMonth() + 1) + "/" + date + " " +  maxTimeStamp.getHours()  + ":00", dateValue : current});
+      } else {
+        let maybe = new Date(maxTimeStamp);
+        map.push({label : maxTimeStamp.getHours()  + ":00", dateValue : current});
+      }
+      maxTimeStamp.setMinutes(maxTimeStamp.getMinutes() + bucketSizeMinutes);
+    }
+    return map;
+  }
+
   private updateChart(): void {
     if (this.chart && this.pendingGets === 0) {
       // TODO: Update this to graph multiple data points
       this.selectedMenuItems = this.getSelectedMenuItems();
       let maxTimeStamp = new Date();
-      maxTimeStamp.setHours(maxTimeStamp.getHours() - 48);
+      maxTimeStamp.setHours(maxTimeStamp.getHours() - 50);
       maxTimeStamp.setMinutes(0);
+      let map = this.getXcolumns();
+
+      let xVal = [];
+      for (let k = 0; k < map.length; k += 1) {
+        xVal.push(map[k].label);
+      }
+      xVal.shift();
 
       let dataSets = [];
       
       if (this.selectedMenuItems.length > 0) {
         for (let j = 0; j < this.selectedMenuItems.length; j += 1) {
-          let data = this.parseData(this.metricsDict[this.selectedMenuItems[j].menuItemId], maxTimeStamp)
+          let data = this.parseData(this.metricsDict[this.selectedMenuItems[j].menuItemId], map)
           if (j == 0) {
-            this.chart.data.labels = data.xVal;
+            this.chart.data.labels = xVal;
           }
           dataSets.push({
             data: data.yVal,
@@ -215,13 +236,6 @@ export class MetricGraphComponent implements OnInit {
         };
         this.chart.update();
       }
-
-      // if (this.selectedMenuItems.length > 0) {
-      //   let data = this.parseData(this.metricsDict[this.currentMenuItem.menuItemId], maxTimeStamp)
-      //   this.chart.data.labels = data.xVal;
-      //   this.chart.data.datasets[0].data = data.yVal;
-      //   this.chart.update();
-      // }
     }
 
   }

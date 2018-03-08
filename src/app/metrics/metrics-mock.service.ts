@@ -37,7 +37,7 @@ export class MetricsMockService extends MetricsService {
             }
             this.menuItemClicks[menuItemId].push(new MenuItemClick(n - i - 1, 1, menuItemId, currDate.toISOString()));
             let delta = Math.floor(Math.random() * 55) + 5;
-            currDate.setMinutes(currDate.getMinutes() + delta);
+            currDate.setMinutes(currDate.getMinutes() - delta);
         }
         this.menuItemDates[menuItemId] = currDate;
     }
