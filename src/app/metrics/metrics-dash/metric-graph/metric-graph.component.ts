@@ -83,6 +83,7 @@ export class MetricGraphComponent implements OnInit {
       return 0;
     })
     let maxTimeStamp = new Date(timeStamp.getTime())
+    let minTimeStamp = new Date(timeStamp.getTime())
     let bucketSizeMinutes = 120;
     maxTimeStamp.setMinutes(maxTimeStamp.getMinutes() + bucketSizeMinutes);
     let xVal = [];
@@ -90,9 +91,23 @@ export class MetricGraphComponent implements OnInit {
     let ySum = 0;
     let date = -1;
     sortedMetrics.forEach((res) => {
-      if (res.getTimestampDate() < maxTimeStamp) {
+      if (res.getTimestampDate() >= minTimeStamp && res.getTimestampDate() < maxTimeStamp) {
         ySum += 1;
-      } else {
+      } else if (res.getTimestampDate() > maxTimeStamp) {
+        minTimeStamp.setMinutes(minTimeStamp.getMinutes() + bucketSizeMinutes);
+        maxTimeStamp.setMinutes(maxTimeStamp.getMinutes() + bucketSizeMinutes);
+        while (res.getTimestampDate() > maxTimeStamp) {
+          ySum = 0;
+          yVal.push(ySum);
+          if ((maxTimeStamp.getDate()) != date) {
+            date = maxTimeStamp.getDate();
+            xVal.push((maxTimeStamp.getMonth() + 1) + "/" + date + " " +  maxTimeStamp.getHours()  + ":00");
+          } else {
+            xVal.push(maxTimeStamp.getHours() + ":00");
+          }
+          minTimeStamp.setMinutes(minTimeStamp.getMinutes() + bucketSizeMinutes);
+          maxTimeStamp.setMinutes(maxTimeStamp.getMinutes() + bucketSizeMinutes);
+        }
         if ((maxTimeStamp.getDate()) != date) {
           date = maxTimeStamp.getDate();
           xVal.push((maxTimeStamp.getMonth() + 1) + "/" + date + " " +  maxTimeStamp.getHours()  + ":00");
@@ -101,7 +116,6 @@ export class MetricGraphComponent implements OnInit {
         }
         yVal.push(ySum);
         ySum = 1;
-        maxTimeStamp.setMinutes(maxTimeStamp.getMinutes() + bucketSizeMinutes);
       }
     });
     return {
