@@ -23,7 +23,7 @@ export class MenuServerService implements MenuService {
             this.http
                 .get(route)
                 .subscribe((res) => {
-                    let response: CustomResponse<MenuItem> = CustomResponse.fromResponseMap<MenuItem>(res, this.mapMenuItem);
+                    let response: CustomResponse<MenuItem> = CustomResponse.fromResponseMap<MenuItem>(res, this.mapMenuItem, this);
                     observer.next(response.data);
                     observer.complete();
                 }, (error) => {
@@ -37,7 +37,7 @@ export class MenuServerService implements MenuService {
             this.http
                 .get(route)
                 .subscribe((res) => {
-                    let response: CustomResponse<Array<MenuItem>> = CustomResponse.fromResponseMap<Array<MenuItem>>(res, this.mapMenuItems);
+                    let response: CustomResponse<Array<MenuItem>> = CustomResponse.fromResponseMap<Array<MenuItem>>(res, this.mapMenuItems, this);
                     observer.next(response.data);
                     observer.complete();
                 }, (error) => {
@@ -51,7 +51,7 @@ export class MenuServerService implements MenuService {
             this.http
                 .get(route)
                 .subscribe((res) => {
-                    let response: CustomResponse<Array<DietaryPreference>> = CustomResponse.fromResponseMap<Array<DietaryPreference>>(res, this.mapDietaryPreferences);
+                    let response: CustomResponse<Array<DietaryPreference>> = CustomResponse.fromResponseMap<Array<DietaryPreference>>(res, this.mapDietaryPreferences, this);
                     observer.next(response.data);
                     observer.complete();
                 }, (error) => {
@@ -103,7 +103,7 @@ export class MenuServerService implements MenuService {
             this.http
                 .get(route, { headers: headers })
                 .subscribe((res) => {
-                    let response: CustomResponse<Array<Restaurant>> = CustomResponse.fromResponseMap<Array<Restaurant>>(res, this.mapRestaurants);
+                    let response: CustomResponse<Array<Restaurant>> = CustomResponse.fromResponseMap<Array<Restaurant>>(res, this.mapRestaurants, this);
                     observer.next(response.data);
                     observer.complete();
                 }, (error) => {
@@ -113,10 +113,10 @@ export class MenuServerService implements MenuService {
         });
     }
 
-    private mapMenuItems(value: any[]): Array<MenuItem> {
+    private mapMenuItems(value: any[], context): Array<MenuItem> {
         let result: Array<MenuItem> = [];
         for (let i = 0; i < value.length; i += 1) {
-            result.push(this.mapMenuItem(value[i]));
+            result.push(context.mapMenuItem(value[i]));
         }
         return result;
     }
