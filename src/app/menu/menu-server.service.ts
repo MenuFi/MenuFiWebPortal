@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import { Restaurant } from './restaurant.model';
 import { MenuItem } from './menu-item/menu-item.model';
 import { AddMenuItem } from './menu-item/add-menu-item.model';
 import { MenuService } from './menu.service';
@@ -89,8 +90,27 @@ export class MenuServerService implements MenuService {
                 }, (error) => {
                     observer.next(false);
                     observer.complete();
-                })
+                });
         })
+    }
+
+    public getRestaurants(): Observable<Array<Restaurant>> {
+        return new Observable((observer) => {
+            let route = environment.serverBaseUrl + '/restaurants';
+            let headers = new HttpHeaders({
+                'Content-Type': 'application/json'
+            });
+            this.http
+                .get(route, { headers: headers })
+                .subscribe((res) => {
+                    let response: CustomResponse<Array<Restaurant>> = CustomResponse.fromResponseMap<Array<Restaurant>>(res, this.mapRestaurants);
+                    observer.next(response.data);
+                    observer.complete();
+                }, (error) => {
+                    observer.next([]);
+                    observer.complete();
+                });
+        });
     }
 
     private mapMenuItems(value: any[]): Array<MenuItem> {
@@ -123,6 +143,19 @@ export class MenuServerService implements MenuService {
                 value[i]["dietaryPreferenceId"],
                 value[i]["name"],
                 value[i]["type"]
+            ));
+        }
+        return result;
+    }
+
+    private mapRestaurants(value: any[]): Array<Restaurant> {
+        let result: Array<Restaurant> = [];
+        for (let i = 0; i < value.length; i += 1) {
+            result.push(new Restaurant(
+                value[i]["restaurantId"],
+                value[i]["name"],
+                Number(value[i]["price"]),
+                value[i]["pictureUri"]
             ));
         }
         return result;

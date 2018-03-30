@@ -1,10 +1,14 @@
 <div class="card">
     <div class="card-divider">
       <span class="clearfix">
-        <h4>Restaurant Name Here</h4>
+        <h4>{{restaurantModel ? restaurantModel.name : 'Restaurant Not Found'}}</h4>
       </span>
     </div>
     <div class="card-section">
-        Content
+      <p style="text-align: left">
+        Total menu items: {{ (menuItems | async).length }}
+        <br>
+        Total clicks: {{totalClicks}}
+      </p>
     </div>
 </div>

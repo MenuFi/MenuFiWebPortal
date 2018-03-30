@@ -5,6 +5,7 @@ import { MenuItem } from './menu-item/menu-item.model';
 import { AddMenuItem } from './menu-item/add-menu-item.model';
 import { MenuService } from './menu.service';
 import { DietaryPreference } from './menu-item/dietary-preference.model';
+import { Restaurant } from './restaurant.model';
 
 @Injectable()
 export class MenuMockService implements MenuService {
@@ -66,5 +67,8 @@ export class MenuMockService implements MenuService {
             return Observable.of(true);
         }
         return Observable.of(false);
+    }
+    public getRestaurants(): Observable<Array<Restaurant>> {
+        return Observable.of([new Restaurant(1, "Some Guys", 10.0, "")]);
     }
 }
