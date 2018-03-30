@@ -59,23 +59,27 @@ export class RadarGraphComponent implements OnInit {
   }
 
   parseData(next, map, ts) {
-    let sortedRadars = next.sort((a: MenuItemClick, b: MenuItemClick) => {
-      if (a.getTimestampDate() > b.getTimestampDate()) {return 1;}
-      if (a.getTimestampDate() < b.getTimestampDate()) {return -1;}
-      return 0;
-    })
-    let dietArray = this.menuService.getMenuItem(this.restaurantId,next[0]['menuItemId'])['value']['dietaryPreferences']
-    sortedRadars.forEach((res) => {
-      if (res.getTimestampDate() >= ts) {
-        for(let i = 0; i < dietArray.length; i++) {
-          for(let j = 0; j < map.length; j++) {
-            if (dietArray[i] == map[j]['id']) {
-              map[j]['val'] += 1;
+    if (next.length > 0) {
+      let sortedRadars = next.sort((a: MenuItemClick, b: MenuItemClick) => {
+        if (a.getTimestampDate() > b.getTimestampDate()) {return 1;}
+        if (a.getTimestampDate() < b.getTimestampDate()) {return -1;}
+        return 0;
+      })
+      this.menuService.getMenuItem(this.restaurantId, next[0].menuItemId).subscribe((item) => {
+        let dietArray: number[] = item.dietaryPreferences;
+        sortedRadars.forEach((res) => {
+          if (res.getTimestampDate() >= ts) {
+            for(let i = 0; i < dietArray.length; i++) {
+              for(let j = 0; j < map.length; j++) {
+                if (dietArray[i] == map[j]['id']) {
+                  map[j]['val'] += 1;
+                }
+              }
             }
-          }
-        }
-      } 
-    });
+          } 
+        });
+      });
+    }
     return map;
   }
 
@@ -121,31 +125,32 @@ export class RadarGraphComponent implements OnInit {
 
       let dataSets = [];
 
-      let struct = this.menuService.getAllPreferences()
-      for (var z = 0; z < struct['value'].length; z++) {
-        dataSets.push({id : struct['value'][z]['dietaryPreferenceId'], val : 0})
-        this.poles.push(struct['value'][z]['name']);
-      }
-      this.chart.data.labels = this.poles;
-      
-      if (this.selectedMenuItems.length > 0) {
-        for (let j = 0; j < this.selectedMenuItems.length; j += 1) {
-          let data = this.parseData(this.metricsDict[this.selectedMenuItems[j].menuItemId], dataSets, maxTimeStamp);
-          dataSets = data;
+      this.menuService.getAllPreferences().subscribe((next) => {
+        for (var z = 0; z < next.length; z++) {
+          dataSets.push({id : next[z]['dietaryPreferenceId'], val : 0})
+          this.poles.push(next[z]['name']);
         }
-        let pack = [];
-        for (let k = 0; k < dataSets.length; k++) {
-          pack.push(dataSets[k]['val']);
-        }
+        this.chart.data.labels = this.poles;
+        
+        if (this.selectedMenuItems.length > 0) {
+          for (let j = 0; j < this.selectedMenuItems.length; j += 1) {
+            let data = this.parseData(this.metricsDict[this.selectedMenuItems[j].menuItemId], dataSets, maxTimeStamp);
+            dataSets = data;
+          }
+          let pack = [];
+          for (let k = 0; k < dataSets.length; k++) {
+            pack.push(dataSets[k]['val']);
+          }
 
-        this.chart.config.data.datasets[0].borderColor = "#666699";
-        this.chart.options.legend.display = false;
-        this.chart.config.data.datasets[0].data = pack;
-        this.chart.update();
+          this.chart.config.data.datasets[0].borderColor = "#666699";
+          this.chart.options.legend.display = false;
+          this.chart.config.data.datasets[0].data = pack;
+          this.chart.update();
+        }
+        });
       }
+
     }
-
-  }
 
 }
 
