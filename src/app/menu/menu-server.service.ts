@@ -113,7 +113,7 @@ export class MenuServerService implements MenuService {
         });
     }
 
-    private mapMenuItems(value: any[], context): Array<MenuItem> {
+    private mapMenuItems(value: any[], context: any): Array<MenuItem> {
         let result: Array<MenuItem> = [];
         for (let i = 0; i < value.length; i += 1) {
             result.push(context.mapMenuItem(value[i]));
@@ -121,7 +121,7 @@ export class MenuServerService implements MenuService {
         return result;
     }
 
-    private mapMenuItem(value: any): MenuItem {
+    private mapMenuItem(value: any, context: any): MenuItem {
         return new MenuItem(
             value["menuItemId"],
             value["restaurantId"],
@@ -136,7 +136,7 @@ export class MenuServerService implements MenuService {
         );
     }
 
-    private mapDietaryPreferences(value: any[]): Array<DietaryPreference> {
+    private mapDietaryPreferences(value: any[], context: any): Array<DietaryPreference> {
         let result: Array<DietaryPreference> = [];
         for (let i = 0; i < value.length; i += 1) {
             result.push(new DietaryPreference(
@@ -148,7 +148,7 @@ export class MenuServerService implements MenuService {
         return result;
     }
 
-    private mapRestaurants(value: any[]): Array<Restaurant> {
+    private mapRestaurants(value: any[], context: any): Array<Restaurant> {
         let result: Array<Restaurant> = [];
         for (let i = 0; i < value.length; i += 1) {
             result.push(new Restaurant(
