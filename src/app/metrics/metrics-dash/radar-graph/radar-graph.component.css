@@ -8,11 +8,6 @@ div.card-divider h1, h2, h3, h4 {
     display: inline;
 }
 
-div.card {
-    margin-right: 30px;
-    margin-left: 30px;
-}
-
 div.card-divider span.clearfix {
     width: 100%;
 }

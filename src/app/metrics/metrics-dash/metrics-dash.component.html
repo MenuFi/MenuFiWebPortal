@@ -1,3 +1,14 @@
+<br>
 <h2>Metrics Dashboard</h2>
-<app-radar-graph [restaurantId]="this.restaurantId"></app-radar-graph>
-<app-metric-graph [restaurantId]="this.restaurantId"></app-metric-graph>
+<br>
+<div class="wrapper">
+    <div class="grid-x grid-margin-x">
+        <div class="cell large-3">
+            <app-summary-graph [restaurantId]="this.restaurantId"></app-summary-graph>
+        </div>
+        <div class="cell large-9">
+            <app-radar-graph [restaurantId]="this.restaurantId"></app-radar-graph>
+        </div>
+    </div>
+    <app-metric-graph [restaurantId]="this.restaurantId"></app-metric-graph>
+</div>

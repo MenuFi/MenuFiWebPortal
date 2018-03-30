@@ -11,6 +11,7 @@ import { MetricsService } from './metrics.service';
 import { MetricsServerService } from './metrics-server.service';
 import { MetricsMockService } from './metrics-mock.service';
 import { RadarGraphComponent } from './metrics-dash/radar-graph/radar-graph.component';
+import { SummaryGraphComponent } from './metrics-dash/summary-graph/summary-graph.component';
 
 let metricsServiceImpl = environment.production ? MetricsServerService : MetricsMockService;
 
@@ -21,7 +22,7 @@ let metricsServiceImpl = environment.production ? MetricsServerService : Metrics
     HttpClientModule,
     MetricsRoutingModule
   ],
-  declarations: [MetricsDashComponent, MetricGraphComponent, RadarGraphComponent],
+  declarations: [MetricsDashComponent, MetricGraphComponent, RadarGraphComponent, SummaryGraphComponent],
   providers: [{ provide: MetricsService, useClass: metricsServiceImpl }]
 })
 export class MetricsModule { }
