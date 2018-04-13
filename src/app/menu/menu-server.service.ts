@@ -10,10 +10,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { CustomResponse } from '../shared/CustomResponse';
+import { LoginService } from '../login/login.service';
 
 @Injectable()
 export class MenuServerService implements MenuService {
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private loginService: LoginService) {
         
     }
 
@@ -21,7 +22,7 @@ export class MenuServerService implements MenuService {
         return new Observable<MenuItem>((observer) => {
             let route = environment.serverBaseUrl + '/restaurants/' + restaurantId + '/items/' + menuItemId;
             this.http
-                .get(route)
+                .get(route, { headers: this.loginService.getAuthHeader() })
                 .subscribe((res) => {
                     let response: CustomResponse<MenuItem> = CustomResponse.fromResponseMap<MenuItem>(res, this.mapMenuItem, this);
                     observer.next(response.data);
@@ -35,7 +36,7 @@ export class MenuServerService implements MenuService {
         return new Observable<Array<MenuItem>>((observer) => {
             let route = environment.serverBaseUrl + '/restaurants/' + restaurantId + '/items';
             this.http
-                .get(route)
+                .get(route, { headers: this.loginService.getAuthHeader() })
                 .subscribe((res) => {
                     let response: CustomResponse<Array<MenuItem>> = CustomResponse.fromResponseMap<Array<MenuItem>>(res, this.mapMenuItems, this);
                     observer.next(response.data);
@@ -49,7 +50,7 @@ export class MenuServerService implements MenuService {
         return new Observable<Array<DietaryPreference>>((observer) => {
             let route = environment.serverBaseUrl + "/preferences";
             this.http
-                .get(route)
+                .get(route, { headers: this.loginService.getAuthHeader() })
                 .subscribe((res) => {
                     let response: CustomResponse<Array<DietaryPreference>> = CustomResponse.fromResponseMap<Array<DietaryPreference>>(res, this.mapDietaryPreferences, this);
                     observer.next(response.data);
@@ -62,11 +63,8 @@ export class MenuServerService implements MenuService {
     public createMenuItem(addMenuItem: AddMenuItem): Observable<boolean> {
         return new Observable((observer) => {
             let route = environment.serverBaseUrl + '/restaurants/' + addMenuItem.restaurantId + '/items';
-            let headers = new HttpHeaders({
-                'Content-Type': 'application/json'
-            });
             this.http
-                .post(route, JSON.stringify(addMenuItem), { headers: headers })
+                .post(route, JSON.stringify(addMenuItem), { headers: this.loginService.getAuthHeader() })
                 .subscribe((res) => {
                     observer.next(true);
                     observer.complete();
@@ -79,11 +77,8 @@ export class MenuServerService implements MenuService {
     public editMenuItem(restaurantId: number, menuItem: MenuItem): Observable<boolean> {
         return new Observable((observer) => {
             let route = environment.serverBaseUrl + '/restaurants/' + restaurantId + '/items/' + menuItem.menuItemId;
-            let headers = new HttpHeaders({
-                'Content-Type': 'application/json'
-            });
             this.http
-                .put(route, JSON.stringify(menuItem), { headers: headers })
+                .put(route, JSON.stringify(menuItem), { headers: this.loginService.getAuthHeader() })
                 .subscribe((res) => {
                     observer.next(true);
                     observer.complete();
@@ -97,11 +92,8 @@ export class MenuServerService implements MenuService {
     public getRestaurants(): Observable<Array<Restaurant>> {
         return new Observable((observer) => {
             let route = environment.serverBaseUrl + '/restaurants';
-            let headers = new HttpHeaders({
-                'Content-Type': 'application/json'
-            });
             this.http
-                .get(route, { headers: headers })
+                .get(route, { headers: this.loginService.getAuthHeader() })
                 .subscribe((res) => {
                     let response: CustomResponse<Array<Restaurant>> = CustomResponse.fromResponseMap<Array<Restaurant>>(res, this.mapRestaurants, this);
                     observer.next(response.data);

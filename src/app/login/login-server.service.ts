@@ -33,6 +33,7 @@ export class LoginServerService implements LoginService {
                 res => {
                     let response: CustomResponse<string> = CustomResponse.fromResponse<string>(res);
                     this.loggedIn = true;
+                    this.currentToken = response.data;
                     onSuccess(response);
                     this.router.navigate([this.redirectUrl]);
                 },
@@ -89,5 +90,12 @@ export class LoginServerService implements LoginService {
 
     public isLoggedIn(): boolean {
         return this.loggedIn;
+    }
+
+    public getAuthHeader(): HttpHeaders {
+        return new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Authorization': 'MenuFi ' + this.getCurrentToken()
+        });
     }
 }

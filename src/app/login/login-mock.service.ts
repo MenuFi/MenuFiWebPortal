@@ -5,6 +5,7 @@ import { LoginService } from './login.service';
 import { error } from 'util';
 import { Router } from '@angular/router';
 import { CustomResponse } from '../shared/CustomResponse';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class LoginMockService implements LoginService {
@@ -61,5 +62,12 @@ export class LoginMockService implements LoginService {
 
     public isLoggedIn(): boolean {
         return this.loggedIn;
+    }
+
+    public getAuthHeader(): HttpHeaders {
+        return new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Authorization': 'MenuFi ' + this.getCurrentToken()
+        });
     }
 }

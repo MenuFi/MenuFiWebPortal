@@ -6,13 +6,14 @@ import { MenuItemClick } from './metrics-dash/metric-graph/menu-item-click.model
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CustomResponse } from '../shared/CustomResponse';
 import { environment } from '../../environments/environment';
+import { LoginService } from '../login/login.service';
 
 @Injectable()
 export class MetricsServerService extends MetricsService {
     
     private lastRestaurantId = -1;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private loginService: LoginService) {
         super();
     }
 
@@ -24,7 +25,7 @@ export class MetricsServerService extends MetricsService {
         return new Observable((observer) => {
             let route = environment.serverBaseUrl + '/restaurants/' + restaurantId + '/items/' + menuItemId + '/clicks';
             this.http
-                .get(route)
+                .get(route, { headers: this.loginService.getAuthHeader() })
                 .subscribe((res) => {
                     this.lastRestaurantId = restaurantId;
                     let response = CustomResponse.fromResponseMap<Array<MenuItemClick>>(res, this.mapMenuItemClicks, this);
