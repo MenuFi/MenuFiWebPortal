@@ -11,4 +11,5 @@ export abstract class MenuService {
     public abstract createMenuItem(addMenuItem: AddMenuItem): Observable<boolean>;
     public abstract editMenuItem(restaurantId: number, menuItem: MenuItem): Observable<boolean>;
     public abstract getRestaurants(): Observable<Array<Restaurant>>;
+    public abstract getRestaurantId(): Observable<number>;
 }

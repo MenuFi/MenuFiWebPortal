@@ -71,4 +71,8 @@ export class MenuMockService implements MenuService {
     public getRestaurants(): Observable<Array<Restaurant>> {
         return Observable.of([new Restaurant(1, "Some Guys", 10.0, "")]);
     }
+
+    public getRestaurantId(): Observable<number> {
+        return Observable.of(1);
+    }
 }

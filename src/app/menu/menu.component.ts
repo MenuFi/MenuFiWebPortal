@@ -15,7 +15,7 @@ declare var $:any
 export class MenuComponent implements OnInit, OnDestroy {
 
   menuItemsData: Observable<Array<MenuItem>>;
-  restaurantId: number = 1;
+  restaurantId: number = -1;
 
   newName: string = '';
   newDescription: string = '';
@@ -39,9 +39,12 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.refresh();
-    $('#addModal').foundation();
-    $('#editModal').foundation();
+    this.menuService.getRestaurantId().subscribe((next: number) => {
+      this.restaurantId = next;
+      this.refresh();
+      $('#addModal').foundation();
+      $('#editModal').foundation();
+    });
   }
 
   ngOnDestroy() {

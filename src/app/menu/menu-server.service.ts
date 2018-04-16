@@ -105,6 +105,22 @@ export class MenuServerService implements MenuService {
         });
     }
 
+    public getRestaurantId(): Observable<number> {
+        return new Observable((observer) => {
+            let route = environment.serverBaseUrl + '/restaurants/id';
+            this.http
+                .get(route, { headers: this.loginService.getAuthHeader() })
+                .subscribe((res) => {
+                    let response: CustomResponse<number> = CustomResponse.fromResponseMap<number>(res, (val, ctx) => parseInt(val), this);
+                    observer.next(response.data);
+                    observer.complete();
+                }, (error) => {
+                    observer.next(-1);
+                    observer.complete();
+                });
+        });
+    }
+
     private mapMenuItems(value: any[], context: any): Array<MenuItem> {
         let result: Array<MenuItem> = [];
         for (let i = 0; i < value.length; i += 1) {
