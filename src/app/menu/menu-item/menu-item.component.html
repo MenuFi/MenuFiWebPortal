@@ -13,10 +13,11 @@
         <ul>
           <li>{{this.menuItemModel.price | currency:'USD'}}</li>
           <li>{{this.menuItemModel.calories}} Calories</li>
-          <li>{{this.menuItemModel.description}}</li>
         </ul>
       </div>
     </div>
+    <br>
+    <p>{{this.menuItemModel.description}}</p>
     <div class="csv">
       <b>Ingredients:</b>
       <span *ngFor="let ingredient of this.menuItemModel.ingredients; let ingredientIndex = index">
