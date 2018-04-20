@@ -45,8 +45,6 @@ After downloading the project (see above step), resolve dependencies by running 
 
 `npm install`
 
-**NOTE:** Dependencies of dependencies will need to be first resolved. Read the output of running the above command, and proceed to install dependencies of the dependencies.
-
 ### BUILD
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
@@ -77,3 +75,14 @@ The three different environments are outlined in the environments folder.
 #### REMOTE
 
 Simply navigate to your hosted website domain.
+
+### TROUBLESHOOTING
+
+**Resolving Dependencies:** Dependencies of dependencies will need to be first resolved. Read the output of running `npm install`, and proceed to install dependencies of the dependencies using `npm install <dependency>`.
+
+**Registering New Dependencies:** Make sure to use one of the two following flags to register it in the `packages.json` file:
+
+* `npm install --save <dependency>` for a runtime dependency
+* `npm install --save-dev <dependency>` for a dev compilation dependency
+
+See http://imcodebased.com/npm-save-or-save-dev-which-one-to-use/ for more advice on which to use.
