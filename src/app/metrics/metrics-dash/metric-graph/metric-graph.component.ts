@@ -89,19 +89,21 @@ export class MetricGraphComponent implements OnInit {
     let yTotal = 0;
     let date = -1;
     sortedMetrics.forEach((res) => {
-      if (res.getTimestampDate() >= map[counter].dateValue && res.getTimestampDate() < map[counter + 1].dateValue) {
-        ySum += 1;
-        yTotal += 1;
-      } else if (res.getTimestampDate() > map[counter + 1].dateValue) {
-        while (counter < map.length - 1 && res.getTimestampDate() > map[counter + 1].dateValue) {
-          yVal.push(ySum);
-          counter += 1;
-          ySum = 0;
+      if (counter < map.length - 1) {
+        if (res.getTimestampDate() >= map[counter].dateValue && res.getTimestampDate() < map[counter + 1].dateValue) {
+          ySum += 1;
+          yTotal += 1;
+        } else if (res.getTimestampDate() > map[counter + 1].dateValue) {
+          while (counter < map.length - 1 && res.getTimestampDate() > map[counter + 1].dateValue) {
+            yVal.push(ySum);
+            counter += 1;
+            ySum = 0;
+          }
+          yTotal += 1;
+          ySum += 1;
+        } else {
+          outRange += 1;
         }
-        yTotal += 1;
-        ySum += 1;
-      } else {
-        outRange += 1;
       }
     });
     yVal.push(ySum);
