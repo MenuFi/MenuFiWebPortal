@@ -2,6 +2,10 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.0.
 
+This is part of a larger MenuFi solution that includes the following projects:
+* https://github.com/MenuFi/MenuFiBackend
+* https://github.com/MenuFi/MenuFiAndroidApp
+
 ## Release Notes version 1.0
 
 ### NEW FEATURES
@@ -69,8 +73,9 @@ The three different environments are outlined in the environments folder.
 
 ##### Testing build artifacts
 
-1. Open your browser of choice.
-2. Go to `file:///path/to/project/dist/index.html`
+1. Navigate to `/dist` in your file explorer.
+2. Right click on the `index.html` file and select `Open With`
+3. Choose a browser to test in.
 
 #### REMOTE
 
@@ -78,9 +83,13 @@ Simply navigate to your hosted website domain.
 
 ### TROUBLESHOOTING
 
-**Resolving Dependencies:** Dependencies of dependencies will need to be first resolved. Read the output of running `npm install`, and proceed to install dependencies of the dependencies using `npm install <dependency>`.
+**Resolving Dependencies:**
 
-**Registering New Dependencies:** Make sure to use one of the two following flags to register it in the `packages.json` file:
+Dependencies of dependencies will need to be first resolved. Read the output of running `npm install`, and proceed to install dependencies of the dependencies using `npm install <dependency>`.
+
+**Registering New Dependencies:**
+
+Make sure to use one of the two following flags to register it in the `packages.json` file:
 
 * `npm install --save <dependency>` for a runtime dependency
 * `npm install --save-dev <dependency>` for a dev compilation dependency
